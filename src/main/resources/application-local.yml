@@ -1,0 +1,29 @@
+server:
+  port: 28080
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://planit-management.cvvjqr2echzv.ap-northeast-2.rds.amazonaws.com:3306/spring-react-security
+    username: ENC(i24qGzDGEvQSc/4P35W6Fg==)
+    password: ENC(PfM0DZBrCdKWmr7TyDjqBeKwDYnGBdnG)
+  jpa:
+    hibernate:
+      ddl-auto: create
+#    properties:
+#      hibernate:
+#        show_sql: true
+#        format_sql: true
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        type:
+#          descriptor:
+#            sql: trace
+yeboong:
+  log:
+    path: ./logs/spring-react-security.log
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
