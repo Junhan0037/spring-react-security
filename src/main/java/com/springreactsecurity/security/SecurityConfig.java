@@ -1,4 +1,4 @@
-package com.springreactsecurity.config;
+package com.springreactsecurity.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -30,7 +31,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        super.configure(http);
+//        http.csrf()
+//                .disable();
+//
+//        http.sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//
+//        http.authorizeRequests()
+//                .antMatchers("/api/sign-in").denyAll()
+//                .antMatchers("/api/sign-up").denyAll()
+//                .anyRequest().authenticated();
+//
+//        http.exceptionHandling()
+//                .authenticationEntryPoint(new LoginAuthenticationEntryPoint())
+//                .accessDeniedHandler(new AccessDeniedHandler());
+
+        http
+                .cors()
+                .and()
+                .csrf().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/api/sign-up").permitAll()
+                .antMatchers("/api/sign-in").authenticated()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin().disable();
+
     }
 
 }
