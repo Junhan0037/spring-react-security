@@ -35,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### FE ###
+.DS_Store
+.sass-cache
+*.css.map
+*.psd
+/logs/

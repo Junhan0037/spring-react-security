@@ -1,0 +1,39 @@
+server:
+  error:
+    include-exception: true
+    include-stacktrace: never
+    include-message: always
+    include-binding-errors: never
+    whitelabel:
+      enabled: true
+  servlet:
+    encoding:
+      charset: UTF-8
+spring:
+  profiles:
+    active: local
+  devtools:
+    restart:
+      enabled: false
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      base-path: /ops
+      exposure:
+        include: shutdown
+logging:
+  level:
+    web: info
+  logback:
+    rollingpolicy:
+      max-file-size: 100MB
+      max-history: 365
+      total-size-cap: 3000MB
+jasypt:
+  encryptor:
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+    password: yeboong1234!

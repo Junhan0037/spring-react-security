@@ -1,12 +1,16 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.8'
+    id 'org.springframework.boot' version '2.5.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'com.github.node-gradle.node' version '3.1.1'
 }
 
 group = 'com'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+
+// log4j2 취약성 발견 관련 패치
+ext['log4j2.version'] = '2.15.0'
 
 configurations {
     compileOnly {
@@ -19,17 +23,74 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // Web
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // DB
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1'
+
+    // JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // Utils
+    compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.modelmapper:modelmapper:2.4.4'
+
+    // Swagger
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+
+    // Encrypt Properties 암호화
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
+
+    // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 }
 
 test {
-    useJUnitPlatform()
+//    useJUnitPlatform()
+    exclude '**/*'
 }
+
+node {
+    version = "16.1.0"
+    npmVersion = "7.12.1"
+    download = true
+    distBaseUrl = "https://nodejs.org/dist"
+    npmInstallCommand = "install"
+    workDir = file("${project.projectDir}/.gradle/nodejs")
+    npmWorkDir = file("${project.projectDir}/.gradle/npm")
+    nodeProjectDir = file("${project.projectDir}")
+}
+
+def webappDir = "$projectDir/src/main/webapp"
+
+task deleteBuildfile(type: Delete) { // 프론트엔드 기존 build 파일 삭제
+    delete 'src/main/webapp/build'
+}
+
+task appNpmInstall(type: NpmTask) { // npm install
+    workingDir = file("${webappDir}")
+    args = ["install"]
+}
+
+task appNpmBuild(type: NpmTask) { // npm run build
+    workingDir = file("${webappDir}")
+    args = ["run", "build"]
+}
+
+task copyWebApp(type: Copy) { // build 파일 복사 이동
+    from 'src/main/webapp/build'
+    into 'build/resources/main/static'
+}
+
+appNpmInstall.dependsOn(deleteBuildfile)
+appNpmBuild.dependsOn(appNpmInstall)
+copyWebApp.dependsOn(appNpmBuild)
+
+compileJava.dependsOn(copyWebApp)
