@@ -7,7 +7,8 @@ public enum MsgType {
     NoExistUsername("M001"),
     ExistUserId("M002"),
     RequiredLogin("M003"),
-    NoAuth("M004");
+    NoAuth("M004"),
+    UnknownParameter("M005");
 
     private final String msgCode;
 

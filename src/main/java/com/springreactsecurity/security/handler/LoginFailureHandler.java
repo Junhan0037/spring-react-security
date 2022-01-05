@@ -40,6 +40,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         } else {
             errorDto.setErrorMessage("ServerError");
         }
+        errorDto.setMessage("로그인에 실패했습니다. email, password 를 확인해주세요.");
 
         objectMapper.writeValue(response.getWriter(), errorDto);
     }

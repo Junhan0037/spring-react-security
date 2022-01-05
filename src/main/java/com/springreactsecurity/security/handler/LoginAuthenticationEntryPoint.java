@@ -25,6 +25,7 @@ public class LoginAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         ErrorResponseDto errorDto = new ErrorResponseDto();
         errorDto.setErrorMessage("UnAuthorized");
+        errorDto.setMessage("로그인이 필요한 기능입니다.");
 
         objectMapper.writeValue(response.getWriter(), errorDto);
     }

@@ -25,6 +25,7 @@ public class LoginAccessDeniedHandler implements AccessDeniedHandler {
 
         ErrorResponseDto errorDto = new ErrorResponseDto();
         errorDto.setErrorMessage("Access Denied");
+        errorDto.setMessage("접근이 불가능한 권한입니다.");
 
         objectMapper.writeValue(response.getWriter(), errorDto);
     }

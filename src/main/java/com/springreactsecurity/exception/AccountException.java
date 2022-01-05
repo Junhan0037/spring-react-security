@@ -13,7 +13,7 @@ public class AccountException extends BaseException {
         return super.msgType;
     }
 
-    public String[]  getMsgArgs() {
+    public String[] getMsgArgs() {
         return super.msgArgs;
     }
 }
