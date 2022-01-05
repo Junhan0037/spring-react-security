@@ -26,6 +26,7 @@ dependencies {
     // Web
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // DB
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
@@ -38,7 +39,9 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:2.4.5'
     implementation 'org.modelmapper:modelmapper:2.4.4'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
 
     // Swagger
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
