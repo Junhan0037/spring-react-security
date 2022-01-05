@@ -1,5 +1,7 @@
-package com.springreactsecurity.config;
+package com.springreactsecurity.security;
 
+import com.springreactsecurity.security.handler.LoginFailureHandler;
+import com.springreactsecurity.security.handler.LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -24,13 +26,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers("/**")
+                .antMatchers("/node_modules/**")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        super.configure(http);
+        http.formLogin()
+                .loginProcessingUrl("/api/sign-in")                 // Login Url
+                .usernameParameter("email")                         // Id Parameter
+                .passwordParameter("password")                      // Password Parameter
+                .successHandler(new LoginSuccessHandler())          // LoginSuccessHandler
+                .failureHandler(new LoginFailureHandler());         // LoginFailureHandler
+
+        http.authorizeRequests()
+                .antMatchers("/api/sign-up").permitAll()
+                .antMatchers("/api/sign-in").authenticated()
+                .anyRequest().authenticated();
     }
 
 }
