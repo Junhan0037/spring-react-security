@@ -24,8 +24,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final LoginSuccessHandler loginSuccessHandler;
     private final LoginFailureHandler loginFailureHandler;
     private final LogoutSuccessHandler logoutSuccessHandler;
-    private final LoginAuthenticationEntryPoint loginAuthenticationEntryPoint;
-    private final LoginAccessDeniedHandler loginAccessDeniedHandler;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final AccessDeniedHandler accessDeniedHandler;
     private final UserDetailServiceImpl userDetailService;
     private final DataSource dataSource;
 
@@ -66,8 +66,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenRepository(tokenRepository());                                // DB 저장
 
         http.exceptionHandling()
-                .authenticationEntryPoint(loginAuthenticationEntryPoint)            // AuthenticationEntryPoint (인증)
-                .accessDeniedHandler(loginAccessDeniedHandler);                     // AccessDeniedHandler (인가)
+                .authenticationEntryPoint(authenticationEntryPoint)            // AuthenticationEntryPoint (인증)
+                .accessDeniedHandler(accessDeniedHandler);                     // AccessDeniedHandler (인가)
 
         http.authorizeRequests()
                 .antMatchers("/", "/api/sign-up", "/api/sign-in").permitAll()
