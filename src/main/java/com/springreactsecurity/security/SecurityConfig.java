@@ -46,14 +46,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.formLogin()
-                .loginProcessingUrl("/api/auth/sign-in")                                 // Login Url (POST form)
-                .usernameParameter("userId")                                         // Id Parameter
-                .passwordParameter("userPassword")                                      // Password Parameter
+                .loginProcessingUrl("/api/auth/sign-in")                            // Login Url (POST form)
+                .usernameParameter("userId")                                        // Id Parameter
+                .passwordParameter("userPassword")                                  // Password Parameter
                 .successHandler(loginSuccessHandler)                                // LoginSuccessHandler
                 .failureHandler(loginFailureHandler);                               // LoginFailureHandler
 
         http.logout()
-                .logoutUrl("/api/auth/logout")                                           // Logout Url (POST)
+                .logoutUrl("/api/auth/logout")                                      // Logout Url (POST)
                 .deleteCookies("JSESSIONID", "remember-me")                         // Logout 후 Cookie 삭제
                 .logoutSuccessHandler(logoutSuccessHandler);                        // Logout 성공 후 Handler
 
@@ -62,12 +62,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMeCookieName("remember-me")                                // Cookie 명칭
                 .tokenValiditySeconds(3600)                                         // 로그인 기억하기 기간
                 .alwaysRemember(false)                                              // 항상 기능 활성화
-                .userDetailsService(userDetailService)
+                .userDetailsService(userDetailService)                              // userDetailService
                 .tokenRepository(tokenRepository());                                // DB 저장
 
         http.exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint)            // AuthenticationEntryPoint (인증)
-                .accessDeniedHandler(accessDeniedHandler);                     // AccessDeniedHandler (인가)
+                .authenticationEntryPoint(authenticationEntryPoint)                 // AuthenticationEntryPoint (인증)
+                .accessDeniedHandler(accessDeniedHandler);                          // AccessDeniedHandler (인가)
 
         http.authorizeRequests()
                 .antMatchers("/", "/api/auth/**").permitAll()

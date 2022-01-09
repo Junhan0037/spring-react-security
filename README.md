@@ -30,3 +30,15 @@ $ npm start
 - 통합 실행 (배포 환경)
   ![](images/img_3.png)
   
+### API
+
+- `SecurityConfig.class` 참조
+  - 로그인
+  - 로그아웃
+  
+
+- `Swagger` 참조
+  - 회원가입
+  - 아이디, 비밀번호 찾기
+  - 회원 정보 수정
+  
