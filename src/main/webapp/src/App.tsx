@@ -1,25 +1,32 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes }from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import Home from './pages/HomePage';
 import SignIn from './pages/SignInPage';
 import SignUp from './pages/SignUpPage';
 import NotFound from './pages/NotFound';
 import BD from './pages/BDPage';
+import Error from './pages/ErrorPage';
 import FindPassword from './pages/FindPasswordPage';
+import {ConnectedRouter} from "connected-react-router";
+import history from "./history";
+import {ErrorBoundary} from 'react-error-boundary';
 
 function App() {
-  return (
-    <BrowserRouter>
-        <Routes>
-          <Route path="/find-pwd" element={<FindPassword />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/" element={<Home />} />
-          <Route element={<NotFound />} />
-          <Route path="/jippagui" element={<BD />} />
-        </Routes>
-    </BrowserRouter>
-  )
+    return (
+        <ErrorBoundary FallbackComponent={Error}>
+            <ConnectedRouter history={history}>
+                <Switch>
+                    <Route exact path="/find-pwd" component={FindPassword}/>
+                    <Route exact path="/signup" component={SignUp}/>
+                    <Route exact path="/signin" component={SignIn}/>
+                    <Route exact path="/" component={Home}/>
+                    <Route exact path="/jippagui" component={BD}/>
+                    <Route component={NotFound}/>
+                </Switch>
+            </ConnectedRouter>
+        </ErrorBoundary>
+
+    )
 }
 
 export default App;
