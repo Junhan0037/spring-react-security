@@ -9,13 +9,6 @@ server:
   servlet:
     encoding:
       charset: UTF-8
-    session:
-      timeout: 43200m # 60m * 24h * 30d
-      cookie:
-        max-age: 43200m # 60m * 24h * 30d
-        name: SID
-        http-only: true
-        secure: true
 spring:
   profiles:
     active: local
