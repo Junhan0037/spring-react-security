@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -17,6 +17,11 @@ public class MemberController {
     @PostMapping("/sign-up")
     ResponseEntity<?> signUp(@ModelAttribute @Valid MemberRequestDto.signUpForm signUpForm) {
         return ResponseEntity.ok(memberService.signUp(signUpForm));
+    }
+
+    @GetMapping("/find-id")
+    ResponseEntity<?> findId(@ModelAttribute @Valid MemberRequestDto.findIdForm findIdForm) {
+        return ResponseEntity.ok(memberService.findId(findIdForm));
     }
 
 }

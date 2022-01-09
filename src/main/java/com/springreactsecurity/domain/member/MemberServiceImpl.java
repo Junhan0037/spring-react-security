@@ -27,7 +27,7 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public MemberResponseDto.signUpForm signUp(MemberRequestDto.signUpForm signUpForm) {
+    public MemberResponseDto.memberForm signUp(MemberRequestDto.signUpForm signUpForm) {
         // Form 검증
         validateSignUpForm(signUpForm);
 
@@ -40,9 +40,24 @@ public class MemberServiceImpl implements MemberService {
         // 로그인
         login(savedMember);
 
-        return modelMapper.map(savedMember, MemberResponseDto.signUpForm.class);
+        return modelMapper.map(savedMember, MemberResponseDto.memberForm.class);
     }
 
+    @Override
+    public MemberResponseDto.memberForm findId(MemberRequestDto.findIdForm findIdForm) {
+        Optional<Member> optionalMember = memberRepository.findByNameAndEmail(findIdForm.getName(), findIdForm.getEmail());
+
+        if (optionalMember.isEmpty()) {
+            throw new AccountException(MsgType.NoExistUsername, new String[]{"해당 회원이 존재하지 않습니다."});
+        }
+
+        return modelMapper.map(optionalMember.get(), MemberResponseDto.memberForm.class);
+    }
+
+    /**
+     * 회원가입 시 Dto 검증
+     * @param signUpForm 회원가입 폼
+     */
     private void validateSignUpForm(MemberRequestDto.signUpForm signUpForm) {
         if (!signUpForm.getUserPassword().equals(signUpForm.getUserPasswordConfirm())) {
             throw new AccountException(MsgType.UnknownParameter, new String[]{"비밀번호가 틀립니다."});
@@ -55,6 +70,10 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    /**
+     * 회원가입 후 자동 로그인
+     * @param member 회원 Entity
+     */
     private void login(Member member) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 new UserMember(member),

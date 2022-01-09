@@ -5,6 +5,8 @@ import com.springreactsecurity.domain.member.dto.MemberResponseDto;
 
 public interface MemberService {
 
-    MemberResponseDto.signUpForm signUp(MemberRequestDto.signUpForm signUpForm);
+    MemberResponseDto.memberForm signUp(MemberRequestDto.signUpForm signUpForm);
+
+    MemberResponseDto.memberForm findId(MemberRequestDto.findIdForm findIdForm);
 
 }

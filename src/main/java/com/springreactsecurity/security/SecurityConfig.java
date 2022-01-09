@@ -46,14 +46,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.formLogin()
-                .loginProcessingUrl("/api/sign-in")                                 // Login Url (POST form)
+                .loginProcessingUrl("/api/auth/sign-in")                                 // Login Url (POST form)
                 .usernameParameter("userId")                                         // Id Parameter
                 .passwordParameter("userPassword")                                      // Password Parameter
                 .successHandler(loginSuccessHandler)                                // LoginSuccessHandler
                 .failureHandler(loginFailureHandler);                               // LoginFailureHandler
 
         http.logout()
-                .logoutUrl("/api/logout")                                           // Logout Url (POST)
+                .logoutUrl("/api/auth/logout")                                           // Logout Url (POST)
                 .deleteCookies("JSESSIONID", "remember-me")                         // Logout 후 Cookie 삭제
                 .logoutSuccessHandler(logoutSuccessHandler);                        // Logout 성공 후 Handler
 
@@ -70,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(accessDeniedHandler);                     // AccessDeniedHandler (인가)
 
         http.authorizeRequests()
-                .antMatchers("/", "/api/sign-up", "/api/sign-in").permitAll()
+                .antMatchers("/", "/api/auth/**").permitAll()
                 .anyRequest().authenticated();
     }
 

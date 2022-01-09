@@ -35,4 +35,13 @@ public class MemberRequestDto {
         private String userPassword;
     }
 
+    @Data
+    public static class findIdForm {
+        @NotEmpty(message = "Required Name")
+        private String name;
+
+        @NotEmpty(message = "Required Email")
+        private String email;
+    }
+
 }

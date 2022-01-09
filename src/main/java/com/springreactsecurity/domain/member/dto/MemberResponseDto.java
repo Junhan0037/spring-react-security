@@ -5,7 +5,7 @@ import lombok.Data;
 public class MemberResponseDto {
 
     @Data
-    public static class signUpForm {
+    public static class memberForm {
         private String userId;
         private String name;
         private String email;
