@@ -1,6 +1,7 @@
 # spring-react-security
 
-본 프로젝트는 Spring Security, React 를 사용하여 기본적인 회원 관리 예제 프로젝트 입니다.
+본 프로젝트는 Spring Security, React 를 사용하여 기본적인 회원 관리 예제 프로젝트 입니다.<br />
+프로젝트 구현시 빠르게 기본기능을 가져다 쓸 수 있습니다.
 
 ### Start
 
@@ -42,3 +43,14 @@ $ npm start
   - 아이디, 비밀번호 찾기
   - 회원 정보 수정
   
+## UPCOMING
+
+아래와 같은 기능에 관해서 개발자들의 기여를 기대한다.
+
+- [ ] SMTP (send Email)
+- [ ] 휴대폰 인증
+- [ ] Oauth2 인증 (Google, Naver 등)
+- [ ] HTTPS
+- [ ] Redis
+- [ ] 모니터링툴
+- [ ] Docker
