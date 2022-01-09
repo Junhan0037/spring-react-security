@@ -47,8 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.formLogin()
                 .loginProcessingUrl("/api/sign-in")                                 // Login Url (POST form)
-                .usernameParameter("email")                                         // Id Parameter
-                .passwordParameter("password")                                      // Password Parameter
+                .usernameParameter("userId")                                         // Id Parameter
+                .passwordParameter("userPassword")                                      // Password Parameter
                 .successHandler(loginSuccessHandler)                                // LoginSuccessHandler
                 .failureHandler(loginFailureHandler);                               // LoginFailureHandler
 

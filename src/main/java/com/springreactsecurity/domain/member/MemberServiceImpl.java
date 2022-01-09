@@ -1,6 +1,7 @@
 package com.springreactsecurity.domain.member;
 
-import com.springreactsecurity.domain.member.dto.MemberDto;
+import com.springreactsecurity.domain.member.dto.MemberRequestDto;
+import com.springreactsecurity.domain.member.dto.MemberResponseDto;
 import com.springreactsecurity.exception.AccountException;
 import com.springreactsecurity.exception.MsgType;
 import com.springreactsecurity.security.UserMember;
@@ -26,12 +27,12 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public boolean signUp(MemberDto.signUpForm signUpForm) {
+    public MemberResponseDto.signUpForm signUp(MemberRequestDto.signUpForm signUpForm) {
         // Form 검증
         validateSignUpForm(signUpForm);
 
         // 회원가입 및 저장
-        signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
+        signUpForm.setUserPassword(passwordEncoder.encode(signUpForm.getUserPassword()));
         Member member = modelMapper.map(signUpForm, Member.class);
         member.setRole(Role.USER);
         Member savedMember = memberRepository.save(member);
@@ -39,15 +40,15 @@ public class MemberServiceImpl implements MemberService {
         // 로그인
         login(savedMember);
 
-        return true;
+        return modelMapper.map(savedMember, MemberResponseDto.signUpForm.class);
     }
 
-    private void validateSignUpForm(MemberDto.signUpForm signUpForm) {
-        if (!signUpForm.getPassword().equals(signUpForm.getPasswordConfirm())) {
+    private void validateSignUpForm(MemberRequestDto.signUpForm signUpForm) {
+        if (!signUpForm.getUserPassword().equals(signUpForm.getUserPasswordConfirm())) {
             throw new AccountException(MsgType.UnknownParameter, new String[]{"비밀번호가 틀립니다."});
         }
 
-        Optional<Member> optionalMember = memberRepository.findByEmail(signUpForm.getEmail());
+        Optional<Member> optionalMember = memberRepository.findByUserId(signUpForm.getUserId());
 
         if (optionalMember.isPresent()) {
             throw new AccountException(MsgType.UnknownParameter, new String[]{"아이디가 이미 존재합니다."});
@@ -57,7 +58,7 @@ public class MemberServiceImpl implements MemberService {
     private void login(Member member) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 new UserMember(member),
-                member.getPassword(),
+                member.getUserPassword(),
                 List.of(new SimpleGrantedAuthority(member.getRole().getKey())));
 
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);

@@ -30,7 +30,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         UserMember userMember = (UserMember) authentication.getPrincipal();
         Member member = userMember.getMember();
-        member.setPassword(null);
+        member.setUserPassword(null);
 
         objectMapper.writeValue(response.getWriter(), member);
     }

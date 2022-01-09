@@ -13,7 +13,7 @@ public class UserMember extends User {
     private final Member member;
 
     public UserMember(Member member) {
-        super(member.getEmail(), member.getPassword(), List.of(new SimpleGrantedAuthority(member.getRole().getKey())));
+        super(member.getUserId(), member.getUserPassword(), List.of(new SimpleGrantedAuthority(member.getRole().getKey())));
         this.member = member;
     }
 
