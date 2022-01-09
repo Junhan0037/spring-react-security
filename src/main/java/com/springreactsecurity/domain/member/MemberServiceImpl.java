@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -44,14 +45,35 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberResponseDto.memberForm findId(MemberRequestDto.findIdForm findIdForm) {
+    public String findId(MemberRequestDto.findIdForm findIdForm) {
+        // 회원 찾기
         Optional<Member> optionalMember = memberRepository.findByNameAndEmail(findIdForm.getName(), findIdForm.getEmail());
 
+        // 에러 핸들링
         if (optionalMember.isEmpty()) {
             throw new AccountException(MsgType.NoExistUsername, new String[]{"해당 회원이 존재하지 않습니다."});
         }
 
-        return modelMapper.map(optionalMember.get(), MemberResponseDto.memberForm.class);
+        return optionalMember.get().getUserId();
+    }
+
+    @Override
+    public String findPassword(MemberRequestDto.findPasswordForm findPasswordForm) {
+        // 회원 찾기
+        Optional<Member> optionalMember = memberRepository.findByUserIdAndNameAndEmail(findPasswordForm.getUserId(), findPasswordForm.getName(), findPasswordForm.getEmail());
+
+        // 에러 핸들링
+        if (optionalMember.isEmpty()) {
+            throw new AccountException(MsgType.NoExistUsername, new String[]{"해당 회원이 존재하지 않습니다."});
+        }
+
+        // 비밀번호 초기화
+        Member member = optionalMember.get();
+        String newPassword = UUID.randomUUID().toString();
+        member.setUserPassword(passwordEncoder.encode(newPassword));
+        memberRepository.save(member);
+
+        return newPassword;
     }
 
     /**

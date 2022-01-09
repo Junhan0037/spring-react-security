@@ -24,4 +24,9 @@ public class MemberController {
         return ResponseEntity.ok(memberService.findId(findIdForm));
     }
 
+    @GetMapping("/find-password")
+    ResponseEntity<?> findPassword(@ModelAttribute @Valid MemberRequestDto.findPasswordForm findPasswordForm) {
+        return ResponseEntity.ok(memberService.findPassword(findPasswordForm));
+    }
+
 }

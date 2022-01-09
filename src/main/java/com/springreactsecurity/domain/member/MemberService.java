@@ -7,6 +7,8 @@ public interface MemberService {
 
     MemberResponseDto.memberForm signUp(MemberRequestDto.signUpForm signUpForm);
 
-    MemberResponseDto.memberForm findId(MemberRequestDto.findIdForm findIdForm);
+    String findId(MemberRequestDto.findIdForm findIdForm);
+
+    String findPassword(MemberRequestDto.findPasswordForm findPasswordForm);
 
 }
