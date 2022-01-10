@@ -47,7 +47,7 @@ $ npm start
 
 아래와 같은 기능에 관해서 개발자들의 기여를 기대한다.
 
-- [ ] SMTP (send Email)
+- [x] SMTP (send Email)
 - [ ] 휴대폰 인증
 - [ ] Oauth2 인증 (Google, Naver 등)
 - [ ] HTTPS
