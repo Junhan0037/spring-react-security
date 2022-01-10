@@ -1,7 +1,6 @@
 package com.springreactsecurity.domain.member;
 
-import com.springreactsecurity.domain.member.dto.MemberRequestDto;
-import com.springreactsecurity.domain.member.dto.MemberResponseDto;
+import com.springreactsecurity.domain.member.dto.MemberDto;
 import com.springreactsecurity.exception.AccountException;
 import com.springreactsecurity.exception.MsgType;
 import com.springreactsecurity.mail.EmailMessage;
@@ -34,7 +33,7 @@ public class MemberServiceImpl implements MemberService {
     private final EmailService emailService;
 
     @Override
-    public MemberResponseDto.memberForm signUp(MemberRequestDto.signUpForm signUpForm) {
+    public MemberDto.memberForm signUp(MemberDto.signUpForm signUpForm) {
         // Form 검증
         validateSignUpForm(signUpForm);
 
@@ -50,11 +49,11 @@ public class MemberServiceImpl implements MemberService {
         // 로그인
         login(savedMember);
 
-        return modelMapper.map(savedMember, MemberResponseDto.memberForm.class);
+        return modelMapper.map(savedMember, MemberDto.memberForm.class);
     }
 
     @Override
-    public String findId(MemberRequestDto.findIdForm findIdForm) {
+    public String findId(MemberDto.findIdForm findIdForm) {
         // 회원 찾기
         Optional<Member> optionalMember = memberRepository.findByNameAndEmail(findIdForm.getName(), findIdForm.getEmail());
 
@@ -67,7 +66,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public String findPassword(MemberRequestDto.findPasswordForm findPasswordForm) {
+    public String findPassword(MemberDto.findPasswordForm findPasswordForm) {
         // 회원 찾기
         Optional<Member> optionalMember = memberRepository.findByUserIdAndNameAndEmail(findPasswordForm.getUserId(), findPasswordForm.getName(), findPasswordForm.getEmail());
 
@@ -85,11 +84,34 @@ public class MemberServiceImpl implements MemberService {
         return newPassword;
     }
 
+    @Override
+    public MemberDto.memberForm editMyInfo(MemberDto.editMyInfoForm editMyInfoForm, String userId) {
+        String name = editMyInfoForm.getName();
+        String email = editMyInfoForm.getEmail();
+        String userPassword = editMyInfoForm.getUserPassword();
+
+        Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new AccountException(MsgType.NoExistUsername, new String[]{userId + " 를 찾을 수 없습니다."}));
+
+        validatePassword(userPassword, member.getUserPassword());
+
+        if (!name.isEmpty()) {
+            member.setName(name);
+        }
+
+        if (!email.isEmpty()) {
+            member.setEmail(email);
+        }
+
+        Member savedMember = memberRepository.save(member);
+
+        return modelMapper.map(savedMember, MemberDto.memberForm.class);
+    }
+
     /**
      * 회원가입 시 Dto 검증
      * @param signUpForm 회원가입 폼
      */
-    private void validateSignUpForm(MemberRequestDto.signUpForm signUpForm) {
+    private void validateSignUpForm(MemberDto.signUpForm signUpForm) {
         if (!signUpForm.getUserPassword().equals(signUpForm.getUserPasswordConfirm())) {
             throw new AccountException(MsgType.UnknownParameter, new String[]{"비밀번호가 틀립니다."});
         }
@@ -137,6 +159,17 @@ public class MemberServiceImpl implements MemberService {
                 List.of(new SimpleGrantedAuthority(member.getRole().getKey())));
 
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    }
+
+    /**
+     * 입력한 비밀번호 확인
+     * @param inputPassword 입력 패스워드
+     * @param memberPassword 회원 패스워드
+     */
+    private void validatePassword(String inputPassword, String memberPassword) {
+        if (!passwordEncoder.matches(inputPassword, memberPassword)) {
+            throw new AccountException(MsgType.NoAuth, new String[]{"비밀번호를 확인해주세요."});
+        }
     }
 
 }
