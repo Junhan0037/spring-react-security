@@ -51,6 +51,11 @@ dependencies {
     // Encrypt Properties 암호화
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
 
+    // SMTP
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

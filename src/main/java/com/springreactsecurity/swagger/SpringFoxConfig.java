@@ -1,4 +1,4 @@
-package com.springreactsecurity.config.swagger;
+package com.springreactsecurity.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

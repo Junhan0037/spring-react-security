@@ -8,7 +8,8 @@ public enum MsgType {
     ExistUserId("M002"),
     RequiredLogin("M003"),
     NoAuth("M004"),
-    UnknownParameter("M005");
+    UnknownParameter("M005"),
+    MailError("M006");
 
     private final String msgCode;
 

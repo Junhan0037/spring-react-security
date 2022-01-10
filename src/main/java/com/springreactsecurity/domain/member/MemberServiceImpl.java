@@ -4,6 +4,8 @@ import com.springreactsecurity.domain.member.dto.MemberRequestDto;
 import com.springreactsecurity.domain.member.dto.MemberResponseDto;
 import com.springreactsecurity.exception.AccountException;
 import com.springreactsecurity.exception.MsgType;
+import com.springreactsecurity.mail.EmailMessage;
+import com.springreactsecurity.mail.EmailService;
 import com.springreactsecurity.security.UserMember;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -13,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +30,8 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final TemplateEngine templateEngine;
+    private final EmailService emailService;
 
     @Override
     public MemberResponseDto.memberForm signUp(MemberRequestDto.signUpForm signUpForm) {
@@ -37,6 +43,9 @@ public class MemberServiceImpl implements MemberService {
         Member member = modelMapper.map(signUpForm, Member.class);
         member.setRole(Role.USER);
         Member savedMember = memberRepository.save(member);
+
+        // 가입 확인 메일 전송
+        sendSignUpConfirmEmail(savedMember);
 
         // 로그인
         login(savedMember);
@@ -90,6 +99,31 @@ public class MemberServiceImpl implements MemberService {
         if (optionalMember.isPresent()) {
             throw new AccountException(MsgType.UnknownParameter, new String[]{"아이디가 이미 존재합니다."});
         }
+    }
+
+    /**
+     * Email 전송
+     * @param member 가입한 회원
+     */
+    private void sendSignUpConfirmEmail(Member member) {
+        // Thymeleaf 변수 설정
+        Context context = new Context();
+        context.setVariable("name", member.getName());
+        context.setVariable("message", "회원 가입을 환영합니다.");
+        context.setVariable("image_1", "https://previews.123rf.com/images/maxborovkov/maxborovkov1703/maxborovkov170300174/74747035-%EB%8B%A4%EC%B1%84%EB%A1%9C%EC%9A%B4-%EC%83%89%EC%A2%85%EC%9D%B4%EC%99%80-%EC%A2%85%EC%9D%B4-%EB%B0%B0%EB%84%88%EB%A5%BC-%ED%99%98%EC%98%81%ED%95%A9%EB%8B%88%EB%8B%A4-%EB%B2%A1%ED%84%B0-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-%EB%A0%88%EC%9D%B4-%EC%85%98-.jpg");
+
+        // simple-link.html 을 메일 내용으로 설정
+        String message = templateEngine.process("mail/simple-link", context);
+
+        // Entity 생성
+        EmailMessage emailMessage = EmailMessage.builder()
+                                                .to(member.getEmail())
+                                                .subject("회원 가입을 환영합니다!")
+                                                .message(message)
+                                                .build();
+
+        // 메일 발송
+        emailService.sendEmail(emailMessage);
     }
 
     /**

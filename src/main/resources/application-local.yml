@@ -9,6 +9,20 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ENC(SYYnG6BUHp6b7uqBWyNqPowTkiDKamrLMtrMM5xiMfQ=)
+    password: ENC(MTkVWyIDcFEfK9MpL8qZdFngWA5G1Z4tL8PKE0waSlQ=)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timoout: 5000
+          starttls:
+            enable: true
+  thymeleaf:
+    enabled: false
 #    properties:
 #      hibernate:
 #        show_sql: true
