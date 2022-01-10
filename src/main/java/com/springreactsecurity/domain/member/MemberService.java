@@ -1,14 +1,15 @@
 package com.springreactsecurity.domain.member;
 
-import com.springreactsecurity.domain.member.dto.MemberRequestDto;
-import com.springreactsecurity.domain.member.dto.MemberResponseDto;
+import com.springreactsecurity.domain.member.dto.MemberDto;
 
 public interface MemberService {
 
-    MemberResponseDto.memberForm signUp(MemberRequestDto.signUpForm signUpForm);
+    MemberDto.memberForm signUp(MemberDto.signUpForm signUpForm);
 
-    String findId(MemberRequestDto.findIdForm findIdForm);
+    String findId(MemberDto.findIdForm findIdForm);
 
-    String findPassword(MemberRequestDto.findPasswordForm findPasswordForm);
+    String findPassword(MemberDto.findPasswordForm findPasswordForm);
+
+    MemberDto.memberForm editMyInfo(MemberDto.editMyInfoForm editMyInfoForm, String userId);
 
 }

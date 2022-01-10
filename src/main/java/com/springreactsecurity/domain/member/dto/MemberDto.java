@@ -5,8 +5,9 @@ import lombok.Data;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-public class MemberRequestDto {
+public class MemberDto {
 
+    /* Request */
     @Data
     public static class signUpForm {
         @NotEmpty(message = "Required Id")
@@ -53,6 +54,23 @@ public class MemberRequestDto {
         private String name;
 
         @NotEmpty(message = "Required Email")
+        private String email;
+    }
+
+    @Data
+    public static class editMyInfoForm {
+        private String name;
+        private String email;
+
+        @NotEmpty(message = "Required Password")
+        private String userPassword;
+    }
+
+    /* Response */
+    @Data
+    public static class memberForm {
+        private String userId;
+        private String name;
         private String email;
     }
 
