@@ -3,7 +3,7 @@ import client from "./client";
 
 export default class UserService {
     public static async signin(reqData: SignInReqType): Promise<string> {
-        const response = await client.post('/api/auth/sign-in', reqData)
+        const response = await client.post('/api/auth/sign-in', null, {params: {userId: reqData.userId, userPassword: reqData.userPassword}})
         return response.data.token;
     }
 

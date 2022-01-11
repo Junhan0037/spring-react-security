@@ -18,7 +18,7 @@ function Copyright(props: any) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
+            <Link color="inherit" href="/bd-crew" target="_blank" rel="noopener noreferrer">
                 BD Crew
             </Link>{' '}
             {new Date().getFullYear()}
@@ -38,16 +38,16 @@ const SignIn: React.FC<SignInProps> = ({signin}) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const email = data.get('email');
-        const password = data.get('password');
+        const userId = data.get('userId');
+        const userPassword = data.get('password');
 
         // eslint-disable-next-line no-console
         console.log({
-            email: email,
-            password: password,
+            userId: userId,
+            userPassword: userPassword,
         });
 
-        signin({email, password});
+        signin({userId, userPassword});
     };
     return (
         <ThemeProvider theme={theme}>
@@ -72,10 +72,10 @@ const SignIn: React.FC<SignInProps> = ({signin}) => {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
+                            id="userId"
+                            label="User Id"
+                            name="userId"
+                            autoComplete="userId"
                             autoFocus
                         />
                         <TextField

@@ -2,8 +2,8 @@ import {AnyAction, Reducer} from "redux";
 import {RouterState} from "connected-react-router";
 
 export type SignInReqType = {
-    email: FormDataEntryValue | null;
-    password: FormDataEntryValue | null;
+    userId: FormDataEntryValue | null;
+    userPassword: FormDataEntryValue | null;
 }
 
 export interface AuthState {
