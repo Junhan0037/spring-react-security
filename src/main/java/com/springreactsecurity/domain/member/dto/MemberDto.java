@@ -66,6 +66,18 @@ public class MemberDto {
         private String userPassword;
     }
 
+    @Data
+    public static class editMyPasswordForm {
+        @NotEmpty(message = "Required PastPassword")
+        private String userPastPassword;
+
+        @NotEmpty(message = "Required NewPassword")
+        private String userNewPassword;
+
+        @NotEmpty(message = "Required NewPasswordConfirm")
+        private String userNewPasswordConfirm;
+    }
+
     /* Response */
     @Data
     public static class memberForm {

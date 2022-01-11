@@ -12,4 +12,6 @@ public interface MemberService {
 
     MemberDto.memberForm editMyInfo(MemberDto.editMyInfoForm editMyInfoForm, String userId);
 
+    MemberDto.memberForm editMyPassword(MemberDto.editMyPasswordForm editMyPasswordForm, String userId);
+
 }

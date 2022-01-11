@@ -107,13 +107,35 @@ public class MemberServiceImpl implements MemberService {
         return modelMapper.map(savedMember, MemberDto.memberForm.class);
     }
 
+    @Override
+    public MemberDto.memberForm editMyPassword(MemberDto.editMyPasswordForm editMyPasswordForm, String userId) {
+        String userPastPassword = editMyPasswordForm.getUserPastPassword();
+        String userNewPassword = editMyPasswordForm.getUserNewPassword();
+        String userNewPasswordConfirm = editMyPasswordForm.getUserNewPasswordConfirm();
+
+        if (!userNewPassword.equals(userNewPasswordConfirm)) {
+            throw new AccountException(MsgType.UnknownParameter, new String[]{"비밀번호와 비밀번호 확인이 틀립니다."});
+        }
+
+        Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new AccountException(MsgType.NoExistUsername, new String[]{userId + " 를 찾을 수 없습니다."}));
+
+        if (!passwordEncoder.matches(userPastPassword, member.getUserPassword())) {
+            throw new AccountException(MsgType.NoAuth, new String[]{"기존 비밀번호가 틀립니다."});
+        }
+
+        member.setUserPassword(passwordEncoder.encode(userNewPassword));
+        Member savedMember = memberRepository.save(member);
+
+        return modelMapper.map(savedMember, MemberDto.memberForm.class);
+    }
+
     /**
      * 회원가입 시 Dto 검증
      * @param signUpForm 회원가입 폼
      */
     private void validateSignUpForm(MemberDto.signUpForm signUpForm) {
         if (!signUpForm.getUserPassword().equals(signUpForm.getUserPasswordConfirm())) {
-            throw new AccountException(MsgType.UnknownParameter, new String[]{"비밀번호가 틀립니다."});
+            throw new AccountException(MsgType.UnknownParameter, new String[]{"비밀번호와 비밀번호 확인이 틀립니다."});
         }
 
         Optional<Member> optionalMember = memberRepository.findByUserId(signUpForm.getUserId());
