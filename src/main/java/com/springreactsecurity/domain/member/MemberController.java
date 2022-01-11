@@ -40,4 +40,9 @@ public class MemberController {
         return ResponseEntity.ok(memberService.editMyInfo(editMyInfoForm, member.getUserId()));
     }
 
+    @PostMapping("/edit/my-password")
+    ResponseEntity<?> editMyPassword(@ModelAttribute @Valid MemberDto.editMyPasswordForm editMyPasswordForm, @CurrentUser Member member) {
+        return ResponseEntity.ok(memberService.editMyPassword(editMyPasswordForm, member.getUserId()));
+    }
+
 }

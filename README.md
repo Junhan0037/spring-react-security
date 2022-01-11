@@ -33,7 +33,7 @@ $ npm start
   
 ### API
 
-- `SecurityConfig.class` 참조
+- `SecurityConfig` 참조
   - 로그인
   - 로그아웃
   
@@ -60,3 +60,4 @@ http://localhost:28080/swagger-ui/
 - [ ] Redis
 - [ ] 모니터링툴
 - [ ] Docker
+- [ ] 국제화 (영어)

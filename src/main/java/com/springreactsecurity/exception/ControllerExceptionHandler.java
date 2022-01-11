@@ -29,6 +29,7 @@ public class ControllerExceptionHandler {
         } else {
             errorDto.setMessage(((BindException) e).getBindingResult().getAllErrors().get(0).getDefaultMessage());
         }
+        errorDto.setErrorMessage(MsgType.UnknownParameter.getMsgCode());
         errorDto.setErrorDetailMessage(ExceptionUtils.getStackTrace(e));
 
         return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
