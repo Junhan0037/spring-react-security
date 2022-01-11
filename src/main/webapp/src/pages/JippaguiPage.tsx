@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function BDPage(){
+export default function JippaguiPage(){
   return (
     <div>
       <h1>Hidden</h1>
