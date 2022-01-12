@@ -33,7 +33,7 @@ public class MemberServiceImpl implements MemberService {
     private final EmailService emailService;
 
     @Override
-    public MemberDto.memberForm signUp(MemberDto.signUpForm signUpForm) {
+    public MemberDto.MemberForm signUp(MemberDto.SignUpForm signUpForm) {
         // Form 검증
         validateSignUpForm(signUpForm);
 
@@ -49,11 +49,11 @@ public class MemberServiceImpl implements MemberService {
         // 로그인
         login(savedMember);
 
-        return modelMapper.map(savedMember, MemberDto.memberForm.class);
+        return modelMapper.map(savedMember, MemberDto.MemberForm.class);
     }
 
     @Override
-    public String findId(MemberDto.findIdForm findIdForm) {
+    public String findId(MemberDto.FindIdForm findIdForm) {
         // 회원 찾기
         Optional<Member> optionalMember = memberRepository.findByNameAndEmail(findIdForm.getName(), findIdForm.getEmail());
 
@@ -66,7 +66,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public String findPassword(MemberDto.findPasswordForm findPasswordForm) {
+    public String findPassword(MemberDto.FindPasswordForm findPasswordForm) {
         // 회원 찾기
         Optional<Member> optionalMember = memberRepository.findByUserIdAndNameAndEmail(findPasswordForm.getUserId(), findPasswordForm.getName(), findPasswordForm.getEmail());
 
@@ -85,7 +85,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDto.memberForm editMyInfo(MemberDto.editMyInfoForm editMyInfoForm, String userId) {
+    public MemberDto.MemberForm editMyInfo(MemberDto.EditMyInfoForm editMyInfoForm, String userId) {
         String name = editMyInfoForm.getName();
         String email = editMyInfoForm.getEmail();
         String userPassword = editMyInfoForm.getUserPassword();
@@ -104,11 +104,11 @@ public class MemberServiceImpl implements MemberService {
 
         Member savedMember = memberRepository.save(member);
 
-        return modelMapper.map(savedMember, MemberDto.memberForm.class);
+        return modelMapper.map(savedMember, MemberDto.MemberForm.class);
     }
 
     @Override
-    public MemberDto.memberForm editMyPassword(MemberDto.editMyPasswordForm editMyPasswordForm, String userId) {
+    public MemberDto.MemberForm editMyPassword(MemberDto.EditMyPasswordForm editMyPasswordForm, String userId) {
         String userPastPassword = editMyPasswordForm.getUserPastPassword();
         String userNewPassword = editMyPasswordForm.getUserNewPassword();
         String userNewPasswordConfirm = editMyPasswordForm.getUserNewPasswordConfirm();
@@ -126,14 +126,14 @@ public class MemberServiceImpl implements MemberService {
         member.setUserPassword(passwordEncoder.encode(userNewPassword));
         Member savedMember = memberRepository.save(member);
 
-        return modelMapper.map(savedMember, MemberDto.memberForm.class);
+        return modelMapper.map(savedMember, MemberDto.MemberForm.class);
     }
 
     /**
      * 회원가입 시 Dto 검증
      * @param signUpForm 회원가입 폼
      */
-    private void validateSignUpForm(MemberDto.signUpForm signUpForm) {
+    private void validateSignUpForm(MemberDto.SignUpForm signUpForm) {
         if (!signUpForm.getUserPassword().equals(signUpForm.getUserPasswordConfirm())) {
             throw new AccountException(MsgType.UnknownParameter, new String[]{"비밀번호와 비밀번호 확인이 틀립니다."});
         }

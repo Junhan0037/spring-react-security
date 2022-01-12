@@ -1,5 +1,6 @@
 package com.springreactsecurity.domain.member.dto;
 
+import com.springreactsecurity.domain.member.Role;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -9,7 +10,7 @@ public class MemberDto {
 
     /* Request */
     @Data
-    public static class signUpForm {
+    public static class SignUpForm {
         @NotEmpty(message = "Required Id")
         private String userId;
 
@@ -28,7 +29,7 @@ public class MemberDto {
     }
 
     @Data
-    public static class loginForm {
+    public static class LoginForm {
         @NotEmpty(message = "Required Id")
         private String userId;
 
@@ -37,7 +38,7 @@ public class MemberDto {
     }
 
     @Data
-    public static class findIdForm {
+    public static class FindIdForm {
         @NotEmpty(message = "Required Name")
         private String name;
 
@@ -46,7 +47,7 @@ public class MemberDto {
     }
 
     @Data
-    public static class findPasswordForm {
+    public static class FindPasswordForm {
         @NotEmpty(message = "Required Id")
         private String userId;
 
@@ -58,7 +59,7 @@ public class MemberDto {
     }
 
     @Data
-    public static class editMyInfoForm {
+    public static class EditMyInfoForm {
         private String name;
         private String email;
 
@@ -67,7 +68,7 @@ public class MemberDto {
     }
 
     @Data
-    public static class editMyPasswordForm {
+    public static class EditMyPasswordForm {
         @NotEmpty(message = "Required PastPassword")
         private String userPastPassword;
 
@@ -80,10 +81,11 @@ public class MemberDto {
 
     /* Response */
     @Data
-    public static class memberForm {
+    public static class MemberForm {
         private String userId;
         private String name;
         private String email;
+        private Role role;
     }
 
 }

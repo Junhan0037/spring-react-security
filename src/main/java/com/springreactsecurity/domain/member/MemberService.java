@@ -4,14 +4,14 @@ import com.springreactsecurity.domain.member.dto.MemberDto;
 
 public interface MemberService {
 
-    MemberDto.memberForm signUp(MemberDto.signUpForm signUpForm);
+    MemberDto.MemberForm signUp(MemberDto.SignUpForm signUpForm);
 
-    String findId(MemberDto.findIdForm findIdForm);
+    String findId(MemberDto.FindIdForm findIdForm);
 
-    String findPassword(MemberDto.findPasswordForm findPasswordForm);
+    String findPassword(MemberDto.FindPasswordForm findPasswordForm);
 
-    MemberDto.memberForm editMyInfo(MemberDto.editMyInfoForm editMyInfoForm, String userId);
+    MemberDto.MemberForm editMyInfo(MemberDto.EditMyInfoForm editMyInfoForm, String userId);
 
-    MemberDto.memberForm editMyPassword(MemberDto.editMyPasswordForm editMyPasswordForm, String userId);
+    MemberDto.MemberForm editMyPassword(MemberDto.EditMyPasswordForm editMyPasswordForm, String userId);
 
 }
