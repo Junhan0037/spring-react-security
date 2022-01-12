@@ -1,16 +1,16 @@
 import * as React from 'react';
 import SignInContainer from "../containers/SignInContainer";
 import {useSelector} from "react-redux";
-import {RootState} from "../types";
+import {RootState, UserInfoType} from "../types";
 import {Redirect} from "react-router";
 
 
 export default function SignInPage() {
-    const token = useSelector<RootState, string | null>(
-        (state) => state.auth.token
+    const isSigninedIn = useSelector<RootState, boolean>(
+        (state) => state.auth.isSigninedIn
     );
 
-    if(token !== null){
+    if(isSigninedIn === true){
         return <Redirect to="/"/>;
     }
 

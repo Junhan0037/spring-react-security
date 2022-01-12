@@ -1,7 +1,7 @@
 import SignIn from "../components/SignIn";
 import {useCallback} from "react";
 import {useDispatch} from "react-redux";
-import {signin as signinSagaStart} from "../redux/modules/auth";
+import {signin as signinSagaStart} from "../redux-saga/modules/auth";
 
 export default function SignInContainer(){
     const dispatch = useDispatch();

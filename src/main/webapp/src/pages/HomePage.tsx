@@ -1,15 +1,15 @@
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../types";
+import {RootState, UserInfoType} from "../types";
 import {Redirect} from "react-router";
-import {logout} from "../redux/modules/auth";
+import {logout} from "../redux-saga/modules/auth";
 
 export default function HomePage() {
     const dispatch = useDispatch();
-    const token = useSelector<RootState, string | null>(
-        (state) => state.auth.token
+    const isSigninedIn = useSelector<RootState, boolean>(
+        (state) => state.auth.isSigninedIn
     );
 
-    if (token === null) {
+    if (isSigninedIn === false) {
         return <Redirect to="/signin"/>;
     }
 
