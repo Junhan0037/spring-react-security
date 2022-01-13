@@ -1,16 +1,28 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
-import Home from './pages/HomePage';
-import SignIn from './pages/SignInPage';
-import SignUp from './pages/SignUpPage';
-import NotFound from './pages/NotFound';
-import Jippagui from './pages/JippaguiPage';
-import BDCrew from "./pages/BDCrewPage";
-import Error from './pages/ErrorPage';
-import FindPassword from './pages/FindPasswordPage';
 import {ConnectedRouter} from "connected-react-router";
 import history from "./history";
 import {ErrorBoundary} from 'react-error-boundary';
+import loadable from '@loadable/component'
+
+import Error from './pages/ErrorPage';
+import Loading from './components/Loading';
+// import Home from './pages/HomePage';
+// import SignIn from './pages/SignInPage';
+// import SignUp from './pages/SignUpPage';
+// import NotFound from './pages/NotFound';
+// import Jippagui from './pages/JippaguiPage';
+// import BDCrew from "./pages/BDCrewPage";
+// import FindPassword from './pages/FindPasswordPage';
+
+// const Error = loadable(() => import('./pages/ErrorPage'));
+const Home = loadable(() => import('./pages/HomePage'), {fallback: <Loading/>});
+const SignIn = loadable(() => import('./pages/SignInPage'), {fallback: <Loading/>});
+const SignUp = loadable(() => import('./pages/SignUpPage'), {fallback: <Loading/>});
+const NotFound = loadable(() => import('./pages/NotFound'), {fallback: <Loading/>});
+const Jippagui = loadable(() => import('./pages/JippaguiPage'), {fallback: <Loading/>});
+const BDCrew = loadable(() => import("./pages/BDCrewPage"), {fallback: <Loading/>});
+const FindPassword = loadable(() => import('./pages/FindPasswordPage'), {fallback: <Loading/>});
 
 function App() {
     return (
