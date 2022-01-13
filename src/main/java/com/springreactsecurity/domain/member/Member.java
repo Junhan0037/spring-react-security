@@ -1,6 +1,6 @@
 package com.springreactsecurity.domain.member;
 
-import com.springreactsecurity.common.BaseTimeEntity;
+import com.springreactsecurity.core.common.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
