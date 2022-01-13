@@ -2,7 +2,7 @@ package com.springreactsecurity.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springreactsecurity.exception.AccountException;
-import com.springreactsecurity.exception.MsgType;
+import com.springreactsecurity.exception.ErrorType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,7 +28,7 @@ public class LogoutSuccessHandler implements org.springframework.security.web.au
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
         if (authentication == null) {
-            throw new AccountException(MsgType.RequiredLogin);
+            throw new AccountException(ErrorType.UNAUTHENTICATED);
         }
 
         objectMapper.writeValue(response.getWriter(), true);

@@ -1,5 +1,7 @@
 package com.springreactsecurity.mail;
 
+import com.springreactsecurity.exception.ErrorType;
+import com.springreactsecurity.exception.MailException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -29,7 +31,7 @@ public class EmailServiceImpl implements EmailService {
             log.info("sent email: {}", emailMessage.getMessage());
         } catch (MessagingException e) {
             log.info("failed to send email", e);
-            throw new MailException(MsgType.MailError);
+            throw new MailException(ErrorType.SEND_MAIL_FAILED);
         }
     }
 

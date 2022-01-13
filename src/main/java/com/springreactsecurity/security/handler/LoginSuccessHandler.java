@@ -2,8 +2,10 @@ package com.springreactsecurity.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springreactsecurity.domain.member.Member;
+import com.springreactsecurity.domain.member.dto.MemberDto;
 import com.springreactsecurity.security.UserMember;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -21,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final ObjectMapper objectMapper;
+    private final ModelMapper modelMapper;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -30,9 +33,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         UserMember userMember = (UserMember) authentication.getPrincipal();
         Member member = userMember.getMember();
-        member.setUserPassword(null);
+        MemberDto.MemberForm memberForm = modelMapper.map(member, MemberDto.MemberForm.class);
 
-        objectMapper.writeValue(response.getWriter(), member);
+        objectMapper.writeValue(response.getWriter(), memberForm);
     }
 
 }

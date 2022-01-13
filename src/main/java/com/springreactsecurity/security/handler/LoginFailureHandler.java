@@ -1,15 +1,11 @@
 package com.springreactsecurity.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.springreactsecurity.exception.ErrorResponse;
+import com.springreactsecurity.exception.ErrorType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.CredentialsExpiredException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
@@ -26,27 +22,23 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     private final ObjectMapper objectMapper;
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
+        ErrorType errorType = ErrorType.LOGIN_FAILED;
+        String className = e.getClass().getName();
+
+        response.setStatus(errorType.getStatus().value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
-        ErrorResponseDto errorDto = new ErrorResponseDto();
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .exception(className.substring(className.lastIndexOf(".") + 1))
+                .code(errorType.getCode())
+                .message(errorType.getMessage())
+                .status(errorType.getStatus().value())
+                .error(errorType.getStatus().getReasonPhrase())
+                .build();
 
-        if (exception instanceof BadCredentialsException) {
-            errorDto.setErrorMessage("LoginBadCredential");
-        } else if (exception instanceof DisabledException) {
-            errorDto.setErrorMessage("LoginDisable");
-        } else if (exception instanceof CredentialsExpiredException) {
-            errorDto.setErrorMessage("LoginExpired");
-        } else if (exception instanceof UsernameNotFoundException || exception instanceof InternalAuthenticationServiceException) {
-            errorDto.setErrorMessage("LoginUsernameNotFound");
-        } else {
-            errorDto.setErrorMessage("ServerError");
-        }
-        errorDto.setMessage("로그인에 실패했습니다. id, password 를 확인해주세요.");
-
-        objectMapper.writeValue(response.getWriter(), errorDto);
+        objectMapper.writeValue(response.getWriter(), errorResponse);
     }
 
 }

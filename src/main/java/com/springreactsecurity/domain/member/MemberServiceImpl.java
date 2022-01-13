@@ -1,6 +1,8 @@
 package com.springreactsecurity.domain.member;
 
 import com.springreactsecurity.domain.member.dto.MemberDto;
+import com.springreactsecurity.exception.AccountException;
+import com.springreactsecurity.exception.ErrorType;
 import com.springreactsecurity.mail.EmailMessage;
 import com.springreactsecurity.mail.EmailService;
 import com.springreactsecurity.security.UserMember;
@@ -57,7 +59,7 @@ public class MemberServiceImpl implements MemberService {
 
         // 에러 핸들링
         if (optionalMember.isEmpty()) {
-            throw new AccountException(MsgType.NoExistUsername, new String[]{"해당 회원이 존재하지 않습니다."});
+            throw new AccountException(ErrorType.USER_NOT_EXISTS);
         }
 
         return optionalMember.get().getUserId();
@@ -70,7 +72,7 @@ public class MemberServiceImpl implements MemberService {
 
         // 에러 핸들링
         if (optionalMember.isEmpty()) {
-            throw new AccountException(MsgType.NoExistUsername, new String[]{"해당 회원이 존재하지 않습니다."});
+            throw new AccountException(ErrorType.USER_NOT_EXISTS);
         }
 
         // 비밀번호 초기화
@@ -88,9 +90,11 @@ public class MemberServiceImpl implements MemberService {
         String email = editMyInfoForm.getEmail();
         String userPassword = editMyInfoForm.getUserPassword();
 
-        Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new AccountException(MsgType.NoExistUsername, new String[]{userId + " 를 찾을 수 없습니다."}));
+        Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new AccountException(ErrorType.USER_NOT_EXISTS));
 
-        validatePassword(userPassword, member.getUserPassword());
+        if (!passwordEncoder.matches(userPassword, member.getUserPassword())) {
+            throw new AccountException(ErrorType.PASSWORD_ERROR);
+        }
 
         if (!name.isEmpty()) {
             member.setName(name);
@@ -112,13 +116,13 @@ public class MemberServiceImpl implements MemberService {
         String userNewPasswordConfirm = editMyPasswordForm.getUserNewPasswordConfirm();
 
         if (!userNewPassword.equals(userNewPasswordConfirm)) {
-            throw new AccountException(MsgType.UnknownParameter, new String[]{"비밀번호와 비밀번호 확인이 틀립니다."});
+            throw new AccountException(ErrorType.PASSWORD_CONFIRM_ERROR);
         }
 
-        Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new AccountException(MsgType.NoExistUsername, new String[]{userId + " 를 찾을 수 없습니다."}));
+        Member member = memberRepository.findByUserId(userId).orElseThrow(() -> new AccountException(ErrorType.USER_NOT_EXISTS));
 
         if (!passwordEncoder.matches(userPastPassword, member.getUserPassword())) {
-            throw new AccountException(MsgType.NoAuth, new String[]{"기존 비밀번호가 틀립니다."});
+            throw new AccountException(ErrorType.ORIGIN_PASSWORD_ERROR);
         }
 
         member.setUserPassword(passwordEncoder.encode(userNewPassword));
@@ -133,13 +137,13 @@ public class MemberServiceImpl implements MemberService {
      */
     private void validateSignUpForm(MemberDto.SignUpForm signUpForm) {
         if (!signUpForm.getUserPassword().equals(signUpForm.getUserPasswordConfirm())) {
-            throw new AccountException(MsgType.UnknownParameter, new String[]{"비밀번호와 비밀번호 확인이 틀립니다."});
+            throw new AccountException(ErrorType.PASSWORD_CONFIRM_ERROR);
         }
 
         Optional<Member> optionalMember = memberRepository.findByUserId(signUpForm.getUserId());
 
         if (optionalMember.isPresent()) {
-            throw new AccountException(MsgType.UnknownParameter, new String[]{"아이디가 이미 존재합니다."});
+            throw new AccountException(ErrorType.USER_ID_EXISTS);
         }
     }
 
@@ -179,17 +183,6 @@ public class MemberServiceImpl implements MemberService {
                 List.of(new SimpleGrantedAuthority(member.getRole().getKey())));
 
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-    }
-
-    /**
-     * 입력한 비밀번호 확인
-     * @param inputPassword 입력 패스워드
-     * @param memberPassword 회원 패스워드
-     */
-    private void validatePassword(String inputPassword, String memberPassword) {
-        if (!passwordEncoder.matches(inputPassword, memberPassword)) {
-            throw new AccountException(MsgType.NoAuth, new String[]{"비밀번호를 확인해주세요."});
-        }
     }
 
 }
