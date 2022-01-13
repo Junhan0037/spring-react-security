@@ -1,4 +1,4 @@
-package com.springreactsecurity.common;
+package com.springreactsecurity.exception;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;

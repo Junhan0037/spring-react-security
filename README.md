@@ -1,6 +1,7 @@
 # spring-react-security
 
-본 프로젝트는 Spring Security, React 를 사용하여 기본적인 회원 관리 예제 프로젝트 입니다.
+본 프로젝트는 Spring Security, React 를 사용하여 기본적인 회원 관리 예제 프로젝트 입니다.<br />
+프로젝트 구현시 빠르게 기본기능을 가져다 쓸 수 있습니다.
 
 ### Start
 
@@ -30,3 +31,33 @@ $ npm start
 - 통합 실행 (배포 환경)
   ![](images/img_3.png)
   
+### API
+
+- `SecurityConfig` 참조
+  - 로그인
+  - 로그아웃
+  
+
+- `Swagger` 참조
+  - 회원가입
+  - 아이디, 비밀번호 찾기
+  - 회원 정보 수정
+  
+### Swagger
+
+```shell
+http://localhost:28080/swagger-ui/
+```
+
+### UPCOMING
+
+아래와 같은 기능에 관해서 개발자들의 기여를 기대한다.
+
+- [x] SMTP (send Email)
+- [ ] 휴대폰 인증
+- [ ] Oauth2 인증 (Google, Naver 등)
+- [ ] HTTPS
+- [ ] Redis
+- [ ] 모니터링툴
+- [ ] Docker
+- [ ] 국제화 (영어)

@@ -24,8 +24,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final LoginSuccessHandler loginSuccessHandler;
     private final LoginFailureHandler loginFailureHandler;
     private final LogoutSuccessHandler logoutSuccessHandler;
-    private final LoginAuthenticationEntryPoint loginAuthenticationEntryPoint;
-    private final LoginAccessDeniedHandler loginAccessDeniedHandler;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final AccessDeniedHandler accessDeniedHandler;
     private final UserDetailServiceImpl userDetailService;
     private final DataSource dataSource;
 
@@ -46,14 +46,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.formLogin()
-                .loginProcessingUrl("/api/sign-in")                                 // Login Url (POST form)
-                .usernameParameter("email")                                         // Id Parameter
-                .passwordParameter("password")                                      // Password Parameter
+                .loginProcessingUrl("/api/auth/sign-in")                            // Login Url (POST form)
+                .usernameParameter("userId")                                        // Id Parameter
+                .passwordParameter("userPassword")                                  // Password Parameter
                 .successHandler(loginSuccessHandler)                                // LoginSuccessHandler
                 .failureHandler(loginFailureHandler);                               // LoginFailureHandler
 
         http.logout()
-                .logoutUrl("/api/logout")                                           // Logout Url (POST)
+                .logoutUrl("/api/auth/logout")                                      // Logout Url (POST)
                 .deleteCookies("JSESSIONID", "remember-me")                         // Logout 후 Cookie 삭제
                 .logoutSuccessHandler(logoutSuccessHandler);                        // Logout 성공 후 Handler
 
@@ -62,15 +62,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMeCookieName("remember-me")                                // Cookie 명칭
                 .tokenValiditySeconds(3600)                                         // 로그인 기억하기 기간
                 .alwaysRemember(false)                                              // 항상 기능 활성화
-                .userDetailsService(userDetailService)
+                .userDetailsService(userDetailService)                              // userDetailService
                 .tokenRepository(tokenRepository());                                // DB 저장
 
         http.exceptionHandling()
-                .authenticationEntryPoint(loginAuthenticationEntryPoint)            // AuthenticationEntryPoint (인증)
-                .accessDeniedHandler(loginAccessDeniedHandler);                     // AccessDeniedHandler (인가)
+                .authenticationEntryPoint(authenticationEntryPoint)                 // AuthenticationEntryPoint (인증)
+                .accessDeniedHandler(accessDeniedHandler);                          // AccessDeniedHandler (인가)
 
         http.authorizeRequests()
-                .antMatchers("/", "/api/sign-up", "/api/sign-in").permitAll()
+                .antMatchers("/", "/api/auth/**").permitAll()
+                .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs/**").permitAll()
                 .anyRequest().authenticated();
     }
 

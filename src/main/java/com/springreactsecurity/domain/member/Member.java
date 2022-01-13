@@ -17,13 +17,16 @@ public class Member extends BaseTimeEntity {
     private Long id;
 
     @Column
-    private String email;
+    private String userId;
 
     @Column
-    private String password;
+    private String userPassword;
 
     @Column
     private String name;
+
+    @Column
+    private String email;
 
     @Enumerated(EnumType.STRING)
     private Role role;
