@@ -4,8 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -13,35 +12,47 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-    @ExceptionHandler(value = {AccountException.class})
-    public ResponseEntity<ErrorResponseDto> handleAccountException(AccountException e) {
-        log.error(ExceptionUtils.getStackTrace(e));
-        return new ResponseEntity<>(builderErrorResponse(e), HttpStatus.BAD_REQUEST);
-    }
+    @ExceptionHandler(value = {Exception.class})
+    public ResponseEntity<ErrorResponse> handleException(Exception e) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        String code = "NO_CATCH_ERROR";
+        String className = e.getClass().getName();
 
-    @ExceptionHandler(value = {MethodArgumentNotValidException.class, BindException.class})
-    public ResponseEntity<ErrorResponseDto> handleBindValidationException(Exception e) {
-        log.error(ExceptionUtils.getStackTrace(e));
-
-        ErrorResponseDto errorDto = new ErrorResponseDto();
-        if (e instanceof MethodArgumentNotValidException) {
-            errorDto.setMessage(((MethodArgumentNotValidException) e).getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        if (e instanceof BaseException) {
+            BaseException be = (BaseException) e;
+            status = be.getErrorType().getStatus();
+            code = be.getErrorType().getCode();
+        } else if (e instanceof HttpRequestMethodNotSupportedException) {
+            status = HttpStatus.METHOD_NOT_ALLOWED;
         } else {
-            errorDto.setMessage(((BindException) e).getBindingResult().getAllErrors().get(0).getDefaultMessage());
+            log.error(ExceptionUtils.getStackTrace(e));
         }
-        errorDto.setErrorMessage(MsgType.UnknownParameter.getMsgCode());
-        errorDto.setErrorDetailMessage(ExceptionUtils.getStackTrace(e));
 
-        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .exception(className.substring(className.lastIndexOf(".") + 1))
+                .code(code)
+                .message(e.getMessage())
+                .status(status.value())
+                .error(status.getReasonPhrase())
+                .build();
+
+        return new ResponseEntity<>(errorResponse, status);
     }
 
-    private ErrorResponseDto builderErrorResponse(BaseException baseException) {
-        ErrorResponseDto errorDto = new ErrorResponseDto();
-        errorDto.setMessage(baseException.getMsgArgs()[0]);
-        errorDto.setErrorMessage(baseException.getMsgType().getMsgCode());
-        errorDto.setErrorDetailMessage(ExceptionUtils.getStackTrace(baseException));
-
-        return errorDto;
-    }
+//    @ExceptionHandler(value = {MethodArgumentNotValidException.class, BindException.class})
+//    public ResponseEntity<ErrorResponseDto> handleBindValidationException(Exception e) {
+//        log.error(ExceptionUtils.getStackTrace(e));
+//
+//        ErrorResponseDto errorDto = new ErrorResponseDto();
+//        if (e instanceof MethodArgumentNotValidException) {
+//            errorDto.setMessage(((MethodArgumentNotValidException) e).getBindingResult().getAllErrors().get(0).getDefaultMessage());
+//        } else {
+//            errorDto.setMessage(((BindException) e).getBindingResult().getAllErrors().get(0).getDefaultMessage());
+//        }
+//        errorDto.setErrorMessage(MsgType.UnknownParameter.getMsgCode());
+//        errorDto.setErrorDetailMessage(ExceptionUtils.getStackTrace(e));
+//
+//        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+//    }
 
 }
