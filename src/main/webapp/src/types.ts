@@ -3,18 +3,31 @@ import {RouterState} from "connected-react-router";
 
 
 
+// export type SignInResponseType = {
+//     createdDate: string | null,
+//     modifiedDate: string | null,
+//     id: number,
+//     userId: string | null,
+//     userPassword: null,
+//     name: string | null,
+//     email: string | null,
+//     role: string | null,
+// }
+
 export type SignInResponseType = {
-    createdDate: string | null,
-    modifiedDate: string | null,
-    id: number,
-    userId: string | null,
-    userPassword: null,
-    name: string | null,
-    email: string | null,
-    role: string | null,
+    data: {
+        createdDate: string | null,
+        modifiedDate: string | null,
+        id: number,
+        userId: string | null,
+        userPassword: null,
+        name: string | null,
+        email: string | null,
+        role: string | null,
+    },
 }
 
-export type UserInfoType = {
+export interface UserInfoType {
     jsessionid: string | null,
     userId: string | null,
     name: string | null,
@@ -35,13 +48,14 @@ export type AuthErrorType = {
 
 export interface AuthState {
     isSigninedIn: boolean,
-    userInfo: UserInfoType | {},
+    userInfo: UserInfoType | null,
     // token: string | null;
     // loading: boolean;
     authError: AuthErrorType | null;
 }
 
 export interface RootState{
+    loading: {[key: string]: boolean};
     auth: AuthState;
     router: Reducer<RouterState<unknown>, AnyAction>;
 }
@@ -49,4 +63,5 @@ export interface RootState{
 export interface SignInProps {
     signin: (reqData: SignInReqType) => void;
     error: AuthErrorType | null;
+    isLoading: boolean;
 }

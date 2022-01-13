@@ -14,6 +14,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as React from "react";
 import {SignInProps} from "../types";
 import {Alert, AlertTitle} from "@mui/material";
+import Loading from "./Loading";
 
 function Copyright(props: any) {
     return (
@@ -30,7 +31,7 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-const SignIn: React.FC<SignInProps> = ({signin, error}) => {
+const SignIn: React.FC<SignInProps> = ({signin, error, isLoading}) => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -48,6 +49,9 @@ const SignIn: React.FC<SignInProps> = ({signin, error}) => {
     };
     return (
         <ThemeProvider theme={theme}>
+            {isLoading && <Loading/>}
+            {!isLoading
+            &&
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
                 <Box
@@ -90,10 +94,10 @@ const SignIn: React.FC<SignInProps> = ({signin, error}) => {
                             label="Remember me"
                         />
                         {error &&
-                            <Alert severity="error" style={{whiteSpace: 'pre-line',}}>
-                                <AlertTitle><strong>Error:</strong> {error.errorMessage}</AlertTitle>
-                                아이디, 비밀번호를 확인해 주세요.
-                            </Alert>
+                        <Alert severity="error" style={{whiteSpace: 'pre-line',}}>
+                            <AlertTitle><strong>Error:</strong> {error.errorMessage}</AlertTitle>
+                            아이디, 비밀번호를 확인해 주세요.
+                        </Alert>
                         }
                         <Button
                             type="submit"
@@ -119,6 +123,8 @@ const SignIn: React.FC<SignInProps> = ({signin, error}) => {
                 </Box>
                 <Copyright sx={{mt: 8, mb: 4}}/>
             </Container>
+            }
+
         </ThemeProvider>
     )
 }

@@ -7,10 +7,10 @@ import createRequestActionTypes from "../../lib/createRequestActionTypes";
 import * as authAPI from '../../lib/api/auth';
 import {finishLoading, startLoading} from "./loading";
 
-const [SIGNIN, SIGNIN_SUCCESS, SIGNIN_FAILURE] = createRequestActionTypes(
+export const [SIGNIN, SIGNIN_SUCCESS, SIGNIN_FAILURE] = createRequestActionTypes(
     'auth/SIGNIN'
 );
-const LOGOUT = 'auth/LOGOUT';
+export const LOGOUT = 'auth/LOGOUT';
 
 
 export const signin = createAction(SIGNIN, ({userId, userPassword}: SignInReqType) => ({
@@ -30,7 +30,11 @@ function* signinSaga(action: Action<SignInReqType>) {
             payload: signInRespData,
         });
 
-        cookies.set('userInfo', window.btoa('bdcrew junhan X yeboong('+JSON.stringify(signInRespData)+')'))
+        // cookies.set('userInfo', window.btoa('bdcrew junhan X yeboong('+JSON.stringify(signInRespData)+')'));
+        cookies.set('userInfo', {
+            userId: signInRespData.data.userId,
+            name: signInRespData.data.name,
+        });
 
         // push
         yield put(push('/'))
@@ -63,7 +67,7 @@ export function* authSaga() {
 
 const initState: AuthState = {
     isSigninedIn: false,
-    userInfo: {},
+    userInfo: null,
     authError: null,
 }
 
@@ -81,7 +85,7 @@ const auth = handleActions<AuthState, any>({
     [SIGNIN_FAILURE]: (state, action) => ({
         ...state,
         isSigninedIn: false,
-        userInfo: {},
+        userInfo: null,
         authError: {
             status: action.payload.status,
             statusText: action.payload.statusText,
@@ -93,7 +97,7 @@ const auth = handleActions<AuthState, any>({
     [LOGOUT]: state => ({
         ...state,
         isSigninedIn: false,
-        userInfo: { },
+        userInfo: null,
         authError: null,
     })
 }, initState);

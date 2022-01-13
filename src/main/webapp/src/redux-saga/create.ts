@@ -19,7 +19,14 @@ const create = () => {
         {
             auth: {
                 isSigninedIn: initIsSigninedIn,
-                userInfo: (initUserInfo === null || initUserInfo === undefined) ? {} : initUserInfo,
+                userInfo: (initUserInfo === null || initUserInfo === undefined) ?
+                    null
+                    :
+                    {
+                        jsessionid: cookies.get('JSESSIONID'),
+                        userId: initUserInfo.userId,
+                        name: initUserInfo.name,
+                    },
                 // token: initToken,
                 // loading: false,
                 authError: null,

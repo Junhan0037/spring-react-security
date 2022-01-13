@@ -6,6 +6,7 @@
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
+    "@loadable/component": "^5.15.2",
     "@mui/icons-material": "^5.2.5",
     "@mui/material": "^5.2.7",
     "@testing-library/jest-dom": "^5.16.1",
@@ -61,6 +62,7 @@
     ]
   },
   "devDependencies": {
+    "@types/loadable__component": "^5.13.4",
     "@types/react-redux": "^7.1.21",
     "@types/redux-actions": "^2.6.2"
   }
