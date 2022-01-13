@@ -5,10 +5,12 @@ import createSagaMiddleware from 'redux-saga';
 import rootSaga from "./modules/rootSaga";
 import {routerMiddleware} from 'connected-react-router';
 import history from "../history";
-import TokenService from "../services/TokenService";
+import cookies from "../lib/cookies";
 
 const create = () => {
-    const token = TokenService.get();
+    // const initToken = TokenService.get();
+    const initUserInfo = cookies.get('userInfo');
+    const initIsSigninedIn = (initUserInfo===null || initUserInfo===undefined) ? false : true;
 
     const sagaMiddleware = createSagaMiddleware();
 
@@ -16,9 +18,11 @@ const create = () => {
         rootReducer(history),
         {
             auth: {
-                token,
-                loading: false,
-                error: null,
+                isSigninedIn: initIsSigninedIn,
+                userInfo: (initUserInfo === null || initUserInfo === undefined) ? {} : initUserInfo,
+                // token: initToken,
+                // loading: false,
+                authError: null,
             }},
         composeWithDevTools(applyMiddleware(sagaMiddleware, routerMiddleware(history)))
     );

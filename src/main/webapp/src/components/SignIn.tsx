@@ -12,7 +12,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as React from "react";
-import {SignInReqType} from "../types";
+import {SignInProps} from "../types";
+import {Alert, AlertTitle} from "@mui/material";
 
 function Copyright(props: any) {
     return (
@@ -29,11 +30,7 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-interface SignInProps {
-    signin: (reqData: SignInReqType) => void;
-}
-
-const SignIn: React.FC<SignInProps> = ({signin}) => {
+const SignIn: React.FC<SignInProps> = ({signin, error}) => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -42,10 +39,10 @@ const SignIn: React.FC<SignInProps> = ({signin}) => {
         const userPassword = data.get('password');
 
         // eslint-disable-next-line no-console
-        console.log({
-            userId: userId,
-            userPassword: userPassword,
-        });
+        // console.log({
+        //     userId: userId,
+        //     userPassword: userPassword,
+        // });
 
         signin({userId, userPassword});
     };
@@ -92,11 +89,17 @@ const SignIn: React.FC<SignInProps> = ({signin}) => {
                             control={<Checkbox value="remember" color="primary"/>}
                             label="Remember me"
                         />
+                        {error &&
+                            <Alert severity="error" style={{whiteSpace: 'pre-line',}}>
+                                <AlertTitle><strong>Error:</strong> {error.errorMessage}</AlertTitle>
+                                아이디, 비밀번호를 확인해 주세요.
+                            </Alert>
+                        }
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
-                            sx={{mt: 3, mb: 2}}
+                            sx={{mt: 3, mb: 2,}}
                         >
                             Sign In
                         </Button>

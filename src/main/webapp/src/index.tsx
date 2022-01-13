@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import create from "./redux/create";
+import create from "./redux-saga/create";
 import {Provider} from 'react-redux';
 
 const store = create();
