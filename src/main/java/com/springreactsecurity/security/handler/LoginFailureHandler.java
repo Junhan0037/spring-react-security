@@ -1,7 +1,6 @@
 package com.springreactsecurity.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springreactsecurity.exception.ErrorResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

@@ -1,8 +1,6 @@
 package com.springreactsecurity.domain.member;
 
 import com.springreactsecurity.domain.member.dto.MemberDto;
-import com.springreactsecurity.exception.AccountException;
-import com.springreactsecurity.exception.MsgType;
 import com.springreactsecurity.mail.EmailMessage;
 import com.springreactsecurity.mail.EmailService;
 import com.springreactsecurity.security.UserMember;
