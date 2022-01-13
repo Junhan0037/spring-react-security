@@ -1,6 +1,8 @@
 import {AnyAction, Reducer} from "redux";
 import {RouterState} from "connected-react-router";
 
+
+
 export type SignInResponseType = {
     createdDate: string | null,
     modifiedDate: string | null,
@@ -24,6 +26,8 @@ export type SignInReqType = {
 }
 
 export type AuthErrorType = {
+    status: number | null,
+    statusText: string | null,
     message: string | null,
     errorMessage: string | null,
     errorDetailMessage: string | null,
@@ -34,10 +38,15 @@ export interface AuthState {
     userInfo: UserInfoType | {},
     // token: string | null;
     // loading: boolean;
-    error: AuthErrorType | null;
+    authError: AuthErrorType | null;
 }
 
 export interface RootState{
     auth: AuthState;
     router: Reducer<RouterState<unknown>, AnyAction>;
+}
+
+export interface SignInProps {
+    signin: (reqData: SignInReqType) => void;
+    error: AuthErrorType | null;
 }

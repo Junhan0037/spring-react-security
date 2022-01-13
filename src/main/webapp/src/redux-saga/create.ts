@@ -22,7 +22,7 @@ const create = () => {
                 userInfo: (initUserInfo === null || initUserInfo === undefined) ? {} : initUserInfo,
                 // token: initToken,
                 // loading: false,
-                error: null,
+                authError: null,
             }},
         composeWithDevTools(applyMiddleware(sagaMiddleware, routerMiddleware(history)))
     );

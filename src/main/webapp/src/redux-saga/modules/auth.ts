@@ -36,7 +36,7 @@ function* signinSaga(action: Action<SignInReqType>) {
         yield put(push('/'))
 
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         yield put({
             type: SIGNIN_FAILURE,
             payload: error,
@@ -64,7 +64,7 @@ export function* authSaga() {
 const initState: AuthState = {
     isSigninedIn: false,
     userInfo: {},
-    error: null,
+    authError: null,
 }
 
 const auth = handleActions<AuthState, any>({
@@ -73,22 +73,28 @@ const auth = handleActions<AuthState, any>({
         isSigninedIn: true,
         userInfo: {
             jsessionid: cookies.get('JSESSIONID'),
-            userId: action.payload['userId'],
-            name: action.payload['name'],
+            userId: action.payload.data.userId,
+            name: action.payload.data.name,
         },
-        error: null,
+        authError: null,
     }),
     [SIGNIN_FAILURE]: (state, action) => ({
         ...state,
         isSigninedIn: false,
         userInfo: {},
-        error: action.payload,
+        authError: {
+            status: action.payload.status,
+            statusText: action.payload.statusText,
+            message: action.payload.data.message,
+            errorMessage: action.payload.data.errorMessage,
+            errorDetailMessage: action.payload.data.errorDetailMessage,
+        },
     }),
     [LOGOUT]: state => ({
         ...state,
         isSigninedIn: false,
         userInfo: { },
-        error: null,
+        authError: null,
     })
 }, initState);
 
