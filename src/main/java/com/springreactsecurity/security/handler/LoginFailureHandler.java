@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -39,7 +40,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
             errorDto.setErrorMessage("LoginDisable");
         } else if (exception instanceof CredentialsExpiredException) {
             errorDto.setErrorMessage("LoginExpired");
-        } else if (exception instanceof UsernameNotFoundException) {
+        } else if (exception instanceof UsernameNotFoundException || exception instanceof InternalAuthenticationServiceException) {
             errorDto.setErrorMessage("LoginUsernameNotFound");
         } else {
             errorDto.setErrorMessage("ServerError");
