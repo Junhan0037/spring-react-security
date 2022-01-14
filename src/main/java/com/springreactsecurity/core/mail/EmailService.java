@@ -1,4 +1,4 @@
-package com.springreactsecurity.mail;
+package com.springreactsecurity.core.mail;
 
 public interface EmailService {
 

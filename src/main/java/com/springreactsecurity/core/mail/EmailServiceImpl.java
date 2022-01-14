@@ -1,4 +1,4 @@
-package com.springreactsecurity.mail;
+package com.springreactsecurity.core.mail;
 
 import com.springreactsecurity.core.exception.ErrorType;
 import com.springreactsecurity.core.exception.MailException;

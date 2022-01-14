@@ -14,4 +14,6 @@ public interface MemberService {
 
     MemberDto.MemberForm editMyPassword(MemberDto.EditMyPasswordForm editMyPasswordForm, String userId);
 
+    String completeSignUp(String token, String email);
+
 }
