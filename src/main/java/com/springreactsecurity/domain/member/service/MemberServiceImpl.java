@@ -105,7 +105,8 @@ public class MemberServiceImpl implements MemberService {
         }
 
         if (!email.isEmpty()) {
-            member.setEmail(email);
+            member.resetEmail(email);
+            sendSignUpConfirmEmail(member);
         }
 
         Member savedMember = memberRepository.save(member);

@@ -44,6 +44,11 @@ public class Member extends BaseTimeEntity {
         this.emailVerified = true;
     }
 
+    public void resetEmail(String email) {
+        this.email = email;
+        this.emailVerified = false;
+    }
+
     public boolean isValidToken(String token) {
         return this.emailCheckToken.equals(token);
     }
