@@ -1,4 +1,4 @@
-package com.springreactsecurity.mail;
+package com.springreactsecurity.core.mail;
 
 import lombok.Builder;
 import lombok.Data;

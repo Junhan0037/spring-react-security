@@ -1,8 +1,8 @@
 package com.springreactsecurity.web;
 
 import com.springreactsecurity.domain.member.Member;
-import com.springreactsecurity.domain.member.service.MemberService;
 import com.springreactsecurity.domain.member.dto.MemberDto;
+import com.springreactsecurity.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +19,11 @@ public class MemberController {
     @PostMapping("/auth/sign-up")
     ResponseEntity<?> signUp(@ModelAttribute @Valid MemberDto.SignUpForm signUpForm) {
         return ResponseEntity.ok(memberService.signUp(signUpForm));
+    }
+
+    @GetMapping("/auth/check-email-token")
+    ResponseEntity<?> checkEmailToken(String token, String email) {
+        return ResponseEntity.ok(memberService.completeSignUp(token, email));
     }
 
     @GetMapping("/auth/find-id")
