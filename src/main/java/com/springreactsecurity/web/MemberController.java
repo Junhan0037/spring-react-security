@@ -36,9 +36,10 @@ public class MemberController {
         return ResponseEntity.ok(memberService.findPassword(findPasswordForm));
     }
 
-    @GetMapping("/my-info")
-    ResponseEntity<?> myInfo(@CurrentUser Member member) {
-        return ResponseEntity.ok(member);
+    @GetMapping("/user-info")
+    ResponseEntity<?> userInfo() {
+        Member member = CurrentUserInfoUtil.getCurrentUserInfo();
+        return ResponseEntity.ok(memberService.userInfo(member));
     }
 
     @PostMapping("/edit/my-info")

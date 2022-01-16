@@ -148,6 +148,11 @@ public class MemberServiceImpl implements MemberService {
         return member.getName() + "님의 이메일 인증에 성공하였습니다!";
     }
 
+    @Override
+    public MemberDto.MemberForm userInfo(Member member) {
+        return modelMapper.map(member, MemberDto.MemberForm.class);
+    }
+
     /**
      * 회원가입 시 Dto 검증
      * @param signUpForm 회원가입 폼
