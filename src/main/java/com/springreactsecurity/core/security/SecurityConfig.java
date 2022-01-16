@@ -1,6 +1,7 @@
 package com.springreactsecurity.core.security;
 
 import com.springreactsecurity.core.security.handler.*;
+import com.springreactsecurity.domain.member.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -71,6 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/", "/api/auth/**").permitAll()
+                .antMatchers("/api/admin/**").hasRole(Role.ADMIN.toString())
                 .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs/**").permitAll()
                 .anyRequest().authenticated();
     }
