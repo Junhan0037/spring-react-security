@@ -11,4 +11,8 @@ public interface AdminService {
 
     List<MemberDto.MemberForm> getUserInfoAll();
 
+    MemberDto.MemberForm editUserInfo(AdminDto.EditUserForm editUserForm);
+
+    MemberDto.MemberForm editUserPassword(AdminDto.EditUserPasswordForm editUserPasswordForm);
+
 }

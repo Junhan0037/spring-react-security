@@ -59,7 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.logout()
                 .logoutUrl("/api/auth/logout")                                      // Logout Url (POST)
-                .invalidateHttpSession(true)
+                .invalidateHttpSession(true)                                        // 세션 무효화
+                .clearAuthentication(true)                                          // 인증정보 삭제
                 .deleteCookies("JSESSIONID", "remember-me", COOKIE_NAME)            // Logout 후 Cookie 삭제
                 .logoutSuccessHandler(logoutSuccessHandler);                        // Logout 성공 후 Handler
 
