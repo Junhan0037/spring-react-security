@@ -1,7 +1,9 @@
 package com.springreactsecurity.core.security;
 
 import com.springreactsecurity.core.security.handler.*;
+import com.springreactsecurity.domain.member.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,9 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Value("${server.servlet.session.cookie.name}")
+    private String COOKIE_NAME;
 
     private final LoginSuccessHandler loginSuccessHandler;
     private final LoginFailureHandler loginFailureHandler;
@@ -54,7 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.logout()
                 .logoutUrl("/api/auth/logout")                                      // Logout Url (POST)
-                .deleteCookies("JSESSIONID", "remember-me")                         // Logout 후 Cookie 삭제
+                .invalidateHttpSession(true)                                        // 세션 무효화
+                .clearAuthentication(true)                                          // 인증정보 삭제
+                .deleteCookies("JSESSIONID", "remember-me", COOKIE_NAME)            // Logout 후 Cookie 삭제
                 .logoutSuccessHandler(logoutSuccessHandler);                        // Logout 성공 후 Handler
 
         http.rememberMe()
@@ -72,6 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/", "/api/auth/**").permitAll()
                 .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs/**").permitAll()
+                .antMatchers("/api/admin/**").hasRole(Role.ADMIN.toString())
                 .anyRequest().authenticated();
     }
 

@@ -1,5 +1,6 @@
 package com.springreactsecurity.domain.member.service;
 
+import com.springreactsecurity.domain.member.Member;
 import com.springreactsecurity.domain.member.dto.MemberDto;
 
 public interface MemberService {
@@ -15,5 +16,7 @@ public interface MemberService {
     MemberDto.MemberForm editMyPassword(MemberDto.EditMyPasswordForm editMyPasswordForm, String userId);
 
     String completeSignUp(String token, String email);
+
+    MemberDto.MemberForm userInfo(Member member);
 
 }

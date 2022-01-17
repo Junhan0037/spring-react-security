@@ -15,7 +15,13 @@ public final class CurrentUserInfoUtil {
             throw new AccountException(ErrorType.UNAUTHENTICATED);
         }
 
-        UserMember userMember = (UserMember) authentication.getPrincipal();
+        UserMember userMember;
+        try {
+            userMember = (UserMember) authentication.getPrincipal();
+        } catch (Exception e) {
+            throw new AccountException(ErrorType.LOGIN_REQUIRED);
+        }
+
         Member member = userMember.getMember();
         if (member == null) {
             throw new AccountException(ErrorType.UNAUTHENTICATED);
