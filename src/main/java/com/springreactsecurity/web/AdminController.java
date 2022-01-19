@@ -4,10 +4,7 @@ import com.springreactsecurity.domain.admin.dto.AdminDto;
 import com.springreactsecurity.domain.admin.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -26,6 +23,16 @@ public class AdminController {
     @GetMapping("/user-info/all")
     ResponseEntity<?> userInfoAll() {
         return ResponseEntity.ok(adminService.getUserInfoAll());
+    }
+
+    @PostMapping("/edit/user-info")
+    ResponseEntity<?> editUserInfo(@ModelAttribute @Valid AdminDto.EditUserForm editUserForm) {
+        return ResponseEntity.ok(adminService.editUserInfo(editUserForm));
+    }
+
+    @PostMapping("/edit/user-password")
+    ResponseEntity<?> editUserPassword(@ModelAttribute @Valid AdminDto.EditUserPasswordForm editUserPasswordForm) {
+        return ResponseEntity.ok(adminService.editUserPassword(editUserPasswordForm));
     }
 
 }
