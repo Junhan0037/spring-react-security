@@ -27,9 +27,9 @@ public class LogoutSuccessHandler implements org.springframework.security.web.au
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
-        if (authentication == null) {
-            throw new AccountException(ErrorType.UNAUTHENTICATED);
-        }
+//        if (authentication == null) {
+//            throw new AccountException(ErrorType.UNAUTHENTICATED);
+//        }
 
         objectMapper.writeValue(response.getWriter(), true);
     }

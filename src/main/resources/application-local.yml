@@ -2,9 +2,9 @@ server:
   port: 28080
   servlet:
     session:
-      timeout: 1800
+      timeout: 180m
       cookie:
-        max-age: 1800
+        max-age: 180m
         name: SPRING_REACT_SECURITY_JSESSIONID
 spring:
   datasource:

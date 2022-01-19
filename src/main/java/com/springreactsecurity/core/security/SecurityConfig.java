@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.rememberMe()
                 .rememberMeParameter("remember-me")                                 // Login form Parameter (boolean)
                 .rememberMeCookieName("remember-me")                                // Cookie 명칭
-                .tokenValiditySeconds(3600)                                         // 로그인 기억하기 기간
+                .tokenValiditySeconds(10800)                                        // 로그인 기억하기 기간 (3시간)
                 .alwaysRemember(false)                                              // 항상 기능 활성화
                 .userDetailsService(userDetailService)                              // userDetailService
                 .tokenRepository(tokenRepository());                                // DB 저장
