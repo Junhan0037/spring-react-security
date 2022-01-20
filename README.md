@@ -50,6 +50,47 @@ $ npm start
 http://localhost:28080/swagger-ui/
 ```
 
+### Docker image build
+프로젝트에서 [Docker](https://www.docker.com/) 와 같은 가상화 Container 를 통한 배포를 요구할 경우 본 프로젝트는 Docker image로 빌드할 수 있는 구성을 포함하고 있다.
+docker build를 하기 위해서 호스트 pc에 docker가 설치되어 있어야 한다.
+
+- Build image
+  ```shell
+  docker build --build-arg JAR_FILE=build/libs/spring-react-security-0.0.1-SNAPSHOT.jar -t com.springreactsecurity/springreactsecurity:1.0.0 . 
+  ```
+- Run image
+  ```shell
+  docker run --name cwt -d -p 28080:8080 -e JAVA_OPTS="-Dspring.profiles.active=local -Dserver.port=8080" com.springreactsecurity/springreactsecurity:1.0.0
+  ```
+- log 확인
+  ```shell
+  docker container logs cwt
+  ```
+- Stop image
+   ```shell
+   docker container stop cwt
+   ```
+- Start image
+
+  container 한 번 생성후에는 아래와 같이 container start 명령어로 재기동 할 수 있다.
+  ```shell
+  docker start cwt
+  ```
+- Build image(with gradle)
+
+  gradle 플러그인을 이용해서 docker 를 build 할수 있다.
+  ```shell
+  gradlew docker 
+  ```
+더 자세한 내용과 docker 관련 기능은 아래 문서나 기타 인터넷 사이트를 참고 바란다.
+- [Docker offical doc](https://docs.docker.com/)
+- [spring-boot-docker](https://spring.io/guides/topicals/spring-boot-docker)
+
+
+### Jib (with docker)
+Jib Google 에서 만든 docker 이미지 빌드를 위한 오픈 소스이다. 흥미로운 점은 docker 설치 없이 docker 이미지 빌드를 할 수잇는 점이다.
+
+
 ### UPCOMING
 
 아래와 같은 기능에 관해서 개발자들의 기여를 기대한다.
@@ -60,5 +101,5 @@ http://localhost:28080/swagger-ui/
 - [ ] HTTPS
 - [ ] Redis
 - [ ] 모니터링툴
-- [ ] Docker
+- [x] Docker
 - [ ] 국제화 (영어)
