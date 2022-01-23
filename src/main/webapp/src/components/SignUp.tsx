@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {SignUpProps} from "../types";
 
 function Copyright(props: any) {
   return (
@@ -28,15 +29,34 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-export default function SignUpPage() {
+// export default function SignUp() {
+//   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+//     event.preventDefault();
+//     const data = new FormData(event.currentTarget);
+//     // eslint-disable-next-line no-console
+//     console.log({
+//       userId: data.get("userId"),
+//       name: data.get("name"),
+//       email: data.get("email"),
+//       password: data.get("password"),
+//       passwordConfirm: data.get("passwordConfirm"),
+//     });
+//   };
+
+const SignUp: React.FC<SignUpProps> = ({signup, error, isLoading}) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+      userId: data.get("userId"),
+      name: data.get("name"),
+      email: data.get("email"),
+      password: data.get("password"),
+      passwordConfirm: data.get("passwordConfirm"),
     });
+
+
   };
 
   return (
@@ -59,35 +79,46 @@ export default function SignUpPage() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              {/*<Grid item xs={12} sm={6}>*/}
+              {/*  <TextField*/}
+              {/*    autoComplete="given-name"*/}
+              {/*    name="firstName"*/}
+              {/*    required*/}
+              {/*    fullWidth*/}
+              {/*    id="firstName"*/}
+              {/*    label="First Name"*/}
+              {/*    autoFocus*/}
+              {/*  />*/}
+              {/*</Grid>*/}
+              <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
+                  id="name"
+                  label="name"
+                  name="name"
                   autoComplete="family-name"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                    required
+                    fullWidth
+                    id="userId"
+                    label="User Id"
+                    name="userId"
+                    autoComplete="userId"
+                    autoFocus
                 />
               </Grid>
               <Grid item xs={12}>
@@ -102,11 +133,22 @@ export default function SignUpPage() {
                 />
               </Grid>
               <Grid item xs={12}>
+                <TextField
+                    required
+                    fullWidth
+                    name="passwordConfirm"
+                    label="Password Confirm"
+                    type="password"
+                    id="passwordConfirm"
+                    autoComplete="new-password"
+                />
+              </Grid>
+              {/*<Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
-              </Grid>
+              </Grid>*/}
             </Grid>
             <Button
               type="submit"
