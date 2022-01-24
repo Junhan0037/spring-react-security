@@ -10,7 +10,7 @@ export default function BDCrewPage() {
         },
         {
             img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew2.jpg',
-            title: '이상한 스파이더맨',
+            title: '동엽이의 은밀한 스파이더맨',
         },
         {
             img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew3.jpg',
@@ -107,6 +107,54 @@ export default function BDCrewPage() {
         {
             img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew26.jpg',
             title: '아라베스크',
+        },
+        {
+            img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew27.jpg',
+            title: '동현이 아오키지 에디션',
+        },
+        {
+            img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew28.jpg',
+            title: '노트북 미국갔어',
+        },
+        {
+            img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew29.jpg',
+            title: '병관아 힘내',
+        },
+        {
+            img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew30.jpg',
+            title: '키갈 마스터',
+        },
+        {
+            img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew31.png',
+            title: '동엽이는 문재인 대통령을 좋아한다',
+        },
+        {
+            img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew32.jpg',
+            title: '동현이 오리1',
+        },
+        {
+            img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew33.jpg',
+            title: '동현이 오리2',
+        },
+        {
+            img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew34.jpg',
+            title: '동현이 오리3',
+        },
+        {
+            img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew35.png',
+            title: '국민 키갈 남친 이동현',
+        },
+        {
+            img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew36.webp',
+            title: '오리에 미친 사람',
+        },
+        {
+            img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew37.jpg',
+            title: '동현이 여친',
+        },
+        {
+            img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew38.jpg',
+            title: '치킨 마시쩡',
         },
     ];
 
