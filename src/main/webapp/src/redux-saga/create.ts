@@ -10,7 +10,7 @@ import cookies from "../lib/cookies";
 const create = () => {
     // const initToken = TokenService.get();
     const initUserInfo = cookies.get('userInfo');
-    const initIsSigninedIn = (initUserInfo===null || initUserInfo===undefined) ? false : true;
+    const initIsSigninedIn = (initUserInfo === null || initUserInfo === undefined) ? false : true;
 
     const sagaMiddleware = createSagaMiddleware();
 
@@ -29,8 +29,13 @@ const create = () => {
                     },
                 // token: initToken,
                 // loading: false,
-                authError: null,
-            }},
+
+                // authError: null,
+                authErrorCase: null,
+                signUpError: null,
+                signInError: null,
+            }
+        },
         composeWithDevTools(applyMiddleware(sagaMiddleware, routerMiddleware(history)))
     );
 
