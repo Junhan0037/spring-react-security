@@ -95,8 +95,14 @@ const SignIn: React.FC<SignInProps> = ({signin, error, isLoading}) => {
                         />
                         {error &&
                         <Alert severity="error" style={{whiteSpace: 'pre-line',}}>
-                            <AlertTitle><strong>Error:</strong> {error.errorMessage}</AlertTitle>
-                            아이디, 비밀번호를 확인해 주세요.
+                            <AlertTitle><strong>Error:</strong></AlertTitle>
+                            {error.message}
+
+                            {/*아이디, 비밀번호를 확인해 주세요.*/}
+
+                            {/*{error.message?.split('.')[0]}.*/}
+                            {/*<br/>*/}
+                            {/*{error.message?.split('.')[1]}.*/}
                         </Alert>
                         }
                         <Button
