@@ -15,6 +15,7 @@ public enum ErrorType {
     USER_ID_EXISTS("USER004", "아이디가 이미 존재합니다.", HttpStatus.BAD_REQUEST),
     PASSWORD_ERROR("USER005", "비밀번호를 확인해주세요.", HttpStatus.BAD_REQUEST),
     TOKEN_VALIDATED_ERROR("USER006", "이메일 토큰 인증에 실패했습니다.", HttpStatus.BAD_REQUEST),
+    EMAIL_EXISTS("USER007", "이메일이 이미 존재합니다.", HttpStatus.BAD_REQUEST),
 
     // Security
     UNAUTHENTICATED("SECURITY001", "로그인이 필요한 기능입니다.", HttpStatus.UNAUTHORIZED),

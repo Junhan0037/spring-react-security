@@ -162,10 +162,16 @@ public class MemberServiceImpl implements MemberService {
             throw new AccountException(ErrorType.PASSWORD_CONFIRM_ERROR);
         }
 
-        Optional<Member> optionalMember = memberRepository.findByUserId(signUpForm.getUserId());
-
-        if (optionalMember.isPresent()) {
+        // 아이디 중복 체크
+        Optional<Member> optionalUserId = memberRepository.findByUserId(signUpForm.getUserId());
+        if (optionalUserId.isPresent()) {
             throw new AccountException(ErrorType.USER_ID_EXISTS);
+        }
+
+        // 이메일 중복 체크
+        Optional<Member> optionalEmail = memberRepository.findByEmail(signUpForm.getEmail());
+        if (optionalEmail.isPresent()) {
+            throw new AccountException(ErrorType.EMAIL_EXISTS);
         }
     }
 
