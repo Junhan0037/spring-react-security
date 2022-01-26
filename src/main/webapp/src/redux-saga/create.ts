@@ -18,12 +18,24 @@ const create = () => {
         rootReducer(history),
         {
             auth: {
+                signin: {
+
+                    userId: null,
+                    userPassword: null,
+                },
+                signup: {
+                    email: null,
+                    name: null,
+                    userId: null,
+                    userPassword: null,
+                    userPasswordConfirm: null,
+                },
                 isSigninedIn: initIsSigninedIn,
                 userInfo: (initUserInfo === null || initUserInfo === undefined) ?
                     null
                     :
                     {
-                        jsessionid: cookies.get('JSESSIONID'),
+                        jsessionid: cookies.get('SPRING_REACT_SECURITY_JSESSIONID'),
                         userId: initUserInfo.userId,
                         name: initUserInfo.name,
                     },
