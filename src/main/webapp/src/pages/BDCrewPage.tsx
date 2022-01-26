@@ -8,10 +8,10 @@ export default function BDCrewPage() {
             img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew.gif',
             title: '동현 가수 에디션',
         },
-        {
-            img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew2.jpg',
-            title: '동엽이의 은밀한 스파이더맨',
-        },
+        // {
+        //     img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew2.jpg',
+        //     title: '동엽이의 은밀한 스파이더맨',
+        // },
         {
             img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew3.jpg',
             title: '동현 잠만보 에디션',
@@ -155,6 +155,18 @@ export default function BDCrewPage() {
         {
             img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew38.jpg',
             title: '치킨 마시쩡',
+        },
+        {
+            img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew39.jpg',
+            title: '호두를 잡아버린 동현이',
+        },
+        {
+            img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew40.jpg',
+            title: '호두 잡은 동현이를 보는 윤만형',
+        },
+        {
+            img: 'https://raw.githubusercontent.com/Junhan0037/spring-react-security/master/src/main/webapp/public/BDCrew41.jpg',
+            title: '고추로 전화하는 동현이',
         },
     ];
 
