@@ -1,18 +1,15 @@
 import {AnyAction, Reducer} from "redux";
 import {RouterState} from "connected-react-router";
+import {ChangeEvent, ChangeEventHandler} from "react";
+import * as React from "react";
 
 
-
-// export type SignInResponseType = {
-//     createdDate: string | null,
-//     modifiedDate: string | null,
-//     id: number,
-//     userId: string | null,
-//     userPassword: null,
-//     name: string | null,
-//     email: string | null,
-//     role: string | null,
-// }
+export interface ChangeFieldType {
+    form: string;
+    key: string;
+    value: string;
+    [index: string]: any;
+}
 
 export interface SignUpResponseType {
     data: {
@@ -23,7 +20,7 @@ export interface SignUpResponseType {
     },
 }
 
-export type SignInResponseType = {
+export interface SignInResponseType {
     data: {
         createdDate: string | null,
         modifiedDate: string | null,
@@ -36,23 +33,28 @@ export type SignInResponseType = {
     },
 }
 
-export type SignUpReqType = {
+export interface SignUpReqType {
     email: FormDataEntryValue | null;
     name: FormDataEntryValue | null;
     userId: FormDataEntryValue | null;
     userPassword: FormDataEntryValue | null;
     userPasswordConfirm: FormDataEntryValue | null;
+    [index: string]: any;
 }
 
-export type SignInReqType = {
+export interface SignInReqType {
     userId: FormDataEntryValue | null;
     userPassword: FormDataEntryValue | null;
+    [index: string]: any;
 }
 
 export interface SignUpProps {
+    form: SignUpReqType;
     signup: (reqData: SignUpReqType) => void;
     error: SignUpErrorType | null;
     isLoading: boolean;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 export interface SignInProps {
@@ -69,7 +71,7 @@ export interface SignInProps {
 //     errorDetailMessage: string | null,
 // }
 
-export type SignUpErrorType = {
+export interface SignUpErrorType {
     exception: string | null,
     code: string | null,
     message: string | null,
@@ -77,7 +79,7 @@ export type SignUpErrorType = {
     error: string | null,
 }
 
-export type SignInErrorType = {
+export interface SignInErrorType {
     status: number | null,
     statusText: string | null,
     message: string | null,
@@ -100,6 +102,8 @@ export interface UserInfoType {
 // }
 
 export interface AuthState {
+    signup: SignUpReqType,
+    signin: SignInReqType,
     isSigninedIn: boolean,
     userInfo: UserInfoType | null,
     // token: string | null;
@@ -108,6 +112,7 @@ export interface AuthState {
     authErrorCase: string | null,
     signInError: SignInErrorType | null,
     signUpError: SignUpErrorType | null,
+    [index: string]: any;
 }
 
 export interface RootState{
