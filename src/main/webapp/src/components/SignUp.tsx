@@ -13,19 +13,20 @@ import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {SignUpProps} from "../types";
 import Loading from "./Loading";
 import {Alert, AlertTitle} from "@mui/material";
+import Copyright from './Copyright';
 
-function Copyright(props: any) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="/bd-crew" target="_blank" rel="noopener noreferrer">
-                BD Crew
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+// function Copyright(props: any) {
+//     return (
+//         <Typography variant="body2" color="text.secondary" align="center" {...props}>
+//             {'Copyright © '}
+//             <Link color="inherit" href="/bd-crew" target="_blank" rel="noopener noreferrer">
+//                 BD Crew
+//             </Link>{' '}
+//             {new Date().getFullYear()}
+//             {'.'}
+//         </Typography>
+//     );
+// }
 
 const theme = createTheme();
 
@@ -43,7 +44,7 @@ const theme = createTheme();
 //     });
 //   };
 
-const SignUp: React.FC<SignUpProps> = ({form, signup, error, isLoading, onChange, handleSubmit}) => {
+const SignUp: React.FC<SignUpProps> = ({form, /*signup, */error, isLoading, onChange, handleSubmit}) => {
 
     // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     //     event.preventDefault();
@@ -87,10 +88,12 @@ const SignUp: React.FC<SignUpProps> = ({form, signup, error, isLoading, onChange
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
-                                    error={((error?.code === 'PARAM001') && (error.message === '올바른 형식의 이메일 주소여야 합니다'))
+                                    error={((error?.code === 'USER007') && (error.message === '이메일이 이미 존재합니다.'))
+                                        || ((error?.code === 'PARAM001') && (error.message === '올바른 형식의 이메일 주소여야 합니다'))
                                         || ((error?.code === 'PARAM001') && (error.message === 'Required Email'))
                                     }
-                                    autoFocus={((error?.code === 'PARAM001') && (error.message === '올바른 형식의 이메일 주소여야 합니다'))
+                                    autoFocus={((error?.code === 'USER007') && (error.message === '이메일이 이미 존재합니다.'))
+                                        || ((error?.code === 'PARAM001') && (error.message === '올바른 형식의 이메일 주소여야 합니다'))
                                         || ((error?.code === 'PARAM001') && (error.message === 'Required Email'))
                                         || (error === null)
                                     }
