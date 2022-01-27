@@ -1,6 +1,5 @@
 import {AnyAction, Reducer} from "redux";
 import {RouterState} from "connected-react-router";
-import {ChangeEvent, ChangeEventHandler} from "react";
 import * as React from "react";
 
 
@@ -50,7 +49,7 @@ export interface SignInReqType {
 
 export interface SignUpProps {
     form: SignUpReqType;
-    signup: (reqData: SignUpReqType) => void;
+    // signup: (reqData: SignUpReqType) => void;
     error: SignUpErrorType | null;
     isLoading: boolean;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -58,9 +57,12 @@ export interface SignUpProps {
 }
 
 export interface SignInProps {
-    signin: (reqData: SignInReqType) => void;
+    form: SignInReqType;
+    // signin: (reqData: SignInReqType) => void;
     error: SignInErrorType | null;
     isLoading: boolean;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 // export type AuthErrorType = {
@@ -77,14 +79,23 @@ export interface SignUpErrorType {
     message: string | null,
     status: number | null,
     error: string | null,
+    networkStatusText: string | null,
+    networkStatus: number | null,
 }
 
 export interface SignInErrorType {
-    status: number | null,
-    statusText: string | null,
+    exception: string | null,
+    code: string | null,
     message: string | null,
-    // errorMessage: string | null,
-    // errorDetailMessage: string | null,
+    status: number | null,
+    error: string | null,
+    networkStatusText: string | null,
+    networkStatus: number | null,
+
+    // status: number | null,
+    // statusText: string | null,
+    // message: string | null,
+
 }
 
 export interface UserInfoType {

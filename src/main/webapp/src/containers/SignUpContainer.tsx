@@ -1,8 +1,7 @@
-import SignIn from "../components/SignIn";
-import {ChangeEvent, useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {changeField, initializeForm, signup as signupSagaStart, SIGNUP} from "../redux-saga/modules/auth";
-import {SignUpErrorType, RootState, ChangeFieldType} from "../types";
+import {SignUpErrorType, RootState} from "../types";
 import SignUp from "../components/SignUp";
 import * as React from "react";
 
@@ -53,5 +52,5 @@ export default function SignUpContainer(){
         dispatch(signupSagaStart(reqData))
     }, [dispatch]);
 
-    return <SignUp form = {form} signup={signup} error={error} isLoading={isLoading} onChange={onChange} handleSubmit={handleSubmit}/>
+    return <SignUp form = {form}/* signup={signup}*/ error={error} isLoading={isLoading} onChange={onChange} handleSubmit={handleSubmit}/>
 }

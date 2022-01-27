@@ -15,38 +15,40 @@ import * as React from "react";
 import {SignInProps} from "../types";
 import {Alert, AlertTitle} from "@mui/material";
 import Loading from "./Loading";
+import Copyright from './Copyright';
 
-function Copyright(props: any) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="/bd-crew" target="_blank" rel="noopener noreferrer">
-                BD Crew
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+// function Copyright(props: any) {
+//     return (
+//         <Typography variant="body2" color="text.secondary" align="center" {...props}>
+//             {'Copyright © '}
+//             <Link color="inherit" href="/bd-crew" target="_blank" rel="noopener noreferrer">
+//                 BD Crew
+//             </Link>{' '}
+//             {new Date().getFullYear()}
+//             {'.'}
+//         </Typography>
+//     );
+// }
 
 const theme = createTheme();
 
-const SignIn: React.FC<SignInProps> = ({signin, error, isLoading}) => {
+const SignIn: React.FC<SignInProps> = ({form, /*signin, */error, isLoading, onChange, handleSubmit}) => {
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        const userId = data.get('userId');
-        const userPassword = data.get('password');
+    // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    //     event.preventDefault();
+    //     const data = new FormData(event.currentTarget);
+    //     const userId = data.get('userId');
+    //     const userPassword = data.get('password');
+    //
+    //     // eslint-disable-next-line no-console
+    //     // console.log({
+    //     //     userId: userId,
+    //     //     userPassword: userPassword,
+    //     // });
+    //
+    //     signin({userId, userPassword});
+    // };
 
-        // eslint-disable-next-line no-console
-        // console.log({
-        //     userId: userId,
-        //     userPassword: userPassword,
-        // });
-
-        signin({userId, userPassword});
-    };
     return (
         <ThemeProvider theme={theme}>
             {isLoading && <Loading/>}
@@ -70,6 +72,8 @@ const SignIn: React.FC<SignInProps> = ({signin, error, isLoading}) => {
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
                         <TextField
+                            onChange={onChange}
+                            value={form.userId}
                             margin="normal"
                             required
                             fullWidth
@@ -80,13 +84,15 @@ const SignIn: React.FC<SignInProps> = ({signin, error, isLoading}) => {
                             autoFocus
                         />
                         <TextField
+                            onChange={onChange}
+                            value={form.userPassword}
                             margin="normal"
                             required
                             fullWidth
-                            name="password"
-                            label="Password"
+                            name="userPassword"
+                            label="User Password"
                             type="password"
-                            id="password"
+                            id="userPassword"
                             autoComplete="current-password"
                         />
                         <FormControlLabel
@@ -95,8 +101,9 @@ const SignIn: React.FC<SignInProps> = ({signin, error, isLoading}) => {
                         />
                         {error &&
                         <Alert severity="error" style={{whiteSpace: 'pre-line',}}>
-                            <AlertTitle><strong>Error:</strong></AlertTitle>
-                            {error.message}
+                            <AlertTitle><strong>Error: </strong>{(error.code==='SECURITY003') && '로그인 실패'}{(error.networkStatus===500 && String(error.networkStatusText).includes('Server Error')) && '서버 오류'}</AlertTitle>
+                            {(error.code==='SECURITY003') && 'ID, PASSWORD 를 확인해주세요.'}
+                            {(error.networkStatus===500 && String(error.networkStatusText).includes('Server Error')) && '관리자에게 문의해주세요 (wnsgks0037@gmail.com)'}
 
                             {/*아이디, 비밀번호를 확인해 주세요.*/}
 
