@@ -72,20 +72,18 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public String findPassword(MemberDto.FindPasswordForm findPasswordForm) {
         // 회원 찾기
-        Optional<Member> optionalMember = memberRepository.findByUserIdAndNameAndEmail(findPasswordForm.getUserId(), findPasswordForm.getName(), findPasswordForm.getEmail());
-
-        // 에러 핸들링
-        if (optionalMember.isEmpty()) {
-            throw new AccountException(ErrorType.USER_NOT_EXISTS);
-        }
+        Member member = memberRepository.findByUserIdAndNameAndEmail(findPasswordForm.getUserId(), findPasswordForm.getName(), findPasswordForm.getEmail())
+                .orElseThrow(() -> new AccountException(ErrorType.USER_NOT_EXISTS));
 
         // 비밀번호 초기화
-        Member member = optionalMember.get();
         String newPassword = UUID.randomUUID().toString();
         member.setUserPassword(passwordEncoder.encode(newPassword));
-        memberRepository.save(member);
+        Member savedMember = memberRepository.save(member);
 
-        return newPassword;
+        // 이메일 전송
+        sendNewPasswordEmail(savedMember, newPassword);
+
+        return "이메일을 전송했습니다.";
     }
 
     @Override
@@ -176,7 +174,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * Email 전송
+     * Email 인증 전송
      * @param member 가입한 회원
      */
     private void sendSignUpConfirmEmail(Member member) {
@@ -187,8 +185,8 @@ public class MemberServiceImpl implements MemberService {
         context.setVariable("link", "http://localhost:28080/api/auth/check-email-token?token=" + member.getEmailCheckToken() + "&email=" + member.getEmail());
         context.setVariable("image_1", "https://previews.123rf.com/images/maxborovkov/maxborovkov1703/maxborovkov170300174/74747035-%EB%8B%A4%EC%B1%84%EB%A1%9C%EC%9A%B4-%EC%83%89%EC%A2%85%EC%9D%B4%EC%99%80-%EC%A2%85%EC%9D%B4-%EB%B0%B0%EB%84%88%EB%A5%BC-%ED%99%98%EC%98%81%ED%95%A9%EB%8B%88%EB%8B%A4-%EB%B2%A1%ED%84%B0-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-%EB%A0%88%EC%9D%B4-%EC%85%98-.jpg");
 
-        // simple-link.html 을 메일 내용으로 설정
-        String message = templateEngine.process("mail/simple-link", context);
+        // check-email.html 을 메일 내용으로 설정
+        String message = templateEngine.process("mail/check-email", context);
 
         // Entity 생성
         EmailMessage emailMessage = EmailMessage.builder()
@@ -198,6 +196,28 @@ public class MemberServiceImpl implements MemberService {
                                                 .build();
 
         // 메일 발송
+        emailService.sendEmail(emailMessage);
+    }
+
+    /**
+     * 새로운 패스워드 전송
+     * @param member 가입한 회원
+     */
+    private void sendNewPasswordEmail(Member member, String newPassword) {
+        Context context = new Context();
+        context.setVariable("name", member.getName());
+        context.setVariable("message", "새로운 비밀번호 입니다.");
+        context.setVariable("newPassword", newPassword);
+        context.setVariable("image_1", "https://bgcyc.org/wp-content/uploads/2017/08/NOTICE-1024x747.jpg");
+
+        String message = templateEngine.process("mail/new-password", context);
+
+        EmailMessage emailMessage = EmailMessage.builder()
+                                                .to(member.getEmail())
+                                                .subject("새로운 비밀번호 입니다.")
+                                                .message(message)
+                                                .build();
+
         emailService.sendEmail(emailMessage);
     }
 
