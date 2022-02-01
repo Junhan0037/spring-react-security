@@ -13,19 +13,20 @@ import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {SignUpProps} from "../types";
 import Loading from "./Loading";
 import {Alert, AlertTitle} from "@mui/material";
+import Copyright from './Copyright';
 
-function Copyright(props: any) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="/bd-crew" target="_blank" rel="noopener noreferrer">
-                BD Crew
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+// function Copyright(props: any) {
+//     return (
+//         <Typography variant="body2" color="text.secondary" align="center" {...props}>
+//             {'Copyright © '}
+//             <Link color="inherit" href="/bd-crew" target="_blank" rel="noopener noreferrer">
+//                 BD Crew
+//             </Link>{' '}
+//             {new Date().getFullYear()}
+//             {'.'}
+//         </Typography>
+//     );
+// }
 
 const theme = createTheme();
 
@@ -43,24 +44,24 @@ const theme = createTheme();
 //     });
 //   };
 
-const SignUp: React.FC<SignUpProps> = ({signup, error, isLoading}) => {
+const SignUp: React.FC<SignUpProps> = ({form, /*signup, */error, isLoading, onChange, handleSubmit}) => {
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-
-        const reqData = {
-            userId: data.get("userId"),
-            name: data.get("name"),
-            email: data.get("email"),
-            userPassword: data.get("password"),
-            userPasswordConfirm: data.get("passwordConfirm"),
-        }
-        // eslint-disable-next-line no-console
-        console.log(reqData);
-
-        signup(reqData);
-    };
+    // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    //     event.preventDefault();
+    //     const data = new FormData(event.currentTarget);
+    //
+    //     const reqData = {
+    //         userId: data.get("userId"),
+    //         name: data.get("name"),
+    //         email: data.get("email"),
+    //         userPassword: data.get("userPassword"),
+    //         userPasswordConfirm: data.get("userPasswordConfirm"),
+    //     }
+    //     // eslint-disable-next-line no-console
+    //     console.log(reqData);
+    //
+    //     signup(reqData);
+    // };
 
     return (
         <ThemeProvider theme={theme}>
@@ -87,13 +88,23 @@ const SignUp: React.FC<SignUpProps> = ({signup, error, isLoading}) => {
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
+                                    error={((error?.code === 'USER007') && (error.message === '이메일이 이미 존재합니다.'))
+                                        || ((error?.code === 'PARAM001') && (error.message === '올바른 형식의 이메일 주소여야 합니다'))
+                                        || ((error?.code === 'PARAM001') && (error.message === 'Required Email'))
+                                    }
+                                    autoFocus={((error?.code === 'USER007') && (error.message === '이메일이 이미 존재합니다.'))
+                                        || ((error?.code === 'PARAM001') && (error.message === '올바른 형식의 이메일 주소여야 합니다'))
+                                        || ((error?.code === 'PARAM001') && (error.message === 'Required Email'))
+                                        || (error === null)
+                                    }
                                     required
                                     fullWidth
                                     id="email"
                                     label="Email Address"
                                     name="email"
                                     autoComplete="email"
-                                    autoFocus
+                                    onChange={onChange}
+                                    value={form.email}
                                 />
                             </Grid>
                             {/*<Grid item xs={12} sm={6}>*/}
@@ -109,44 +120,64 @@ const SignUp: React.FC<SignUpProps> = ({signup, error, isLoading}) => {
                             {/*</Grid>*/}
                             <Grid item xs={12}>
                                 <TextField
+                                    error={((error?.code==='PARAM001') && (error.message==='Required Name'))}
+                                    autoFocus={((error?.code === 'PARAM001') && (error.message === 'Required Name'))}
                                     required
                                     fullWidth
                                     id="name"
                                     label="name"
                                     name="name"
                                     autoComplete="family-name"
+                                    onChange={onChange}
+                                    value={form.name}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
+                                    error={((error?.code==='PARAM001') && (error.message==='Required Id'))}
+                                    autoFocus={((error?.code === 'PARAM001') && (error.message === 'Required Id'))}
                                     required
                                     fullWidth
                                     id="userId"
                                     label="User Id"
                                     name="userId"
                                     autoComplete="userId"
+                                    onChange={onChange}
+                                    value={form.userId}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
+                                    error={((error?.code==='PARAM001') && (error.message==='Required Password'))}
+                                    autoFocus={((error?.code === 'PARAM001') && (error.message === 'Required Password'))}
                                     required
                                     fullWidth
-                                    name="password"
-                                    label="Password"
+                                    name="userPassword"
+                                    label="User Password"
                                     type="password"
-                                    id="password"
+                                    id="userPassword"
                                     autoComplete="new-password"
+                                    onChange={onChange}
+                                    value={form.userPassword}
                                 />
                             </Grid>
                             <Grid item xs={12} sx={{mb:3}}>
                                 <TextField
+                                    error={((error?.code==='PARAM001') && (error.message==='Required PasswordConfirm'))
+                                        || ((error?.code==='USER002') && (error.message==='비밀번호와 비밀번호 확인이 틀립니다.'))
+                                }
+                                    autoFocus={((error?.code === 'PARAM001') && (error.message === 'Required PasswordConfirm'))
+                                        || ((error?.code==='USER002') && (error.message==='비밀번호와 비밀번호 확인이 틀립니다.'))
+                                }
                                     required
                                     fullWidth
-                                    name="passwordConfirm"
-                                    label="Password Confirm"
+                                    name="userPasswordConfirm"
+                                    label="User Password Confirm"
                                     type="password"
-                                    id="passwordConfirm"
+                                    id="userPasswordConfirm"
                                     autoComplete="new-password"
+                                    onChange={onChange}
+                                    value={form.userPasswordConfirm}
                                 />
                             </Grid>
                             {/*<Grid item xs={12}>*/}

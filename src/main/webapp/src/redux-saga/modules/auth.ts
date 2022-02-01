@@ -1,11 +1,23 @@
 import {Action, handleActions, createAction} from "redux-actions";
 import {call, put, takeEvery} from "redux-saga/effects";
-import {SignInReqType, AuthState, SignInResponseType, SignUpReqType, SignUpResponseType} from "../../types";
+import {
+    SignInReqType,
+    AuthState,
+    SignInResponseType,
+    SignUpReqType,
+    SignUpResponseType,
+    ChangeFieldType
+} from "../../types";
 import {push} from "connected-react-router";
 import cookies from "../../lib/cookies";
 import createRequestActionTypes from "../../lib/createRequestActionTypes";
 import * as authAPI from '../../lib/api/auth';
 import {finishLoading, startLoading} from "./loading";
+import produce from "immer";
+
+const INITIALIZE_FORM = 'auth/INITIALIZE_FORM';
+
+const CHANGE_FIELD = 'auth/CHANGE_FIELD';
 
 export const [SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAILURE] = createRequestActionTypes(
     'auth/SIGNUP'
@@ -15,6 +27,17 @@ export const [SIGNIN, SIGNIN_SUCCESS, SIGNIN_FAILURE] = createRequestActionTypes
 );
 export const LOGOUT = 'auth/LOGOUT';
 
+
+export const initializeForm = createAction(INITIALIZE_FORM, (form: string) => form); // register / login
+
+export const changeField = createAction(
+    CHANGE_FIELD,
+    ({ form, key, value }: ChangeFieldType) => ({
+        form, // signup , signin
+        key, // username, password, passwordConfirm
+        value // 실제 바꾸려는 값
+    })
+);
 
 export const signup = createAction(SIGNUP, ({email, name, userId, userPassword, userPasswordConfirm}: SignUpReqType) => ({
     email,
@@ -108,6 +131,17 @@ export function* authSaga() {
 }
 
 const initState: AuthState = {
+    signup: {
+        email: null,
+        name: null,
+        userId: null,
+        userPassword: null,
+        userPasswordConfirm: null,
+    },
+    signin: {
+        userId: null,
+        userPassword: null,
+    },
     isSigninedIn: false,
     userInfo: null,
     authErrorCase: null,
@@ -116,9 +150,28 @@ const initState: AuthState = {
 }
 
 const auth = handleActions<AuthState, any>({
+    [INITIALIZE_FORM]: (state, action) => ({
+        ...state,
+        [action.payload]: initState[action.payload],
+        authErrorCase: null,
+        signInError: null,
+        signUpError: null,
+    }),
+    [CHANGE_FIELD]: (state, {payload: {form, key, value}}: Action<ChangeFieldType>) =>
+        produce<AuthState>(state, draft => {
+            draft[form][key]=value;
+        }),
+
     [SIGNUP_SUCCESS]: (state, action) => ({
         ...state,
         isSigninedIn: true,
+        signup: {
+            email: null,
+            name: null,
+            userId: null,
+            userPassword: null,
+            userPasswordConfirm: null,
+        },
         userInfo: {
             jsessionid: cookies.get('SPRING_REACT_SECURITY_JSESSIONID'),
             userId: action.payload.data.userId,
@@ -140,6 +193,8 @@ const auth = handleActions<AuthState, any>({
             message: action.payload.data.message,
             status: action.payload.data.status,
             error: action.payload.data.error,
+            networkStatusText: action.payload.statusText,
+            networkStatus: action.payload.status,
         },
         signInError: null,
         // authError: {
@@ -153,6 +208,10 @@ const auth = handleActions<AuthState, any>({
     [SIGNIN_SUCCESS]: (state, action) => ({
         ...state,
         isSigninedIn: true,
+        signin: {
+            userId: null,
+            userPassword: null,
+        },
         userInfo: {
             jsessionid: cookies.get('SPRING_REACT_SECURITY_JSESSIONID'),
             userId: action.payload.data.userId,
@@ -176,11 +235,17 @@ const auth = handleActions<AuthState, any>({
         // },
         authErrorCase: "signin",
         signInError: {
-            status: action.payload.status,
-            statusText: action.payload.statusText,
+            exception: action.payload.data.exception,
+            code: action.payload.data.code,
             message: action.payload.data.message,
-            errorMessage: action.payload.data.errorMessage,
-            errorDetailMessage: action.payload.data.errorDetailMessage,
+            status: action.payload.data.status,
+            error: action.payload.data.error,
+            networkStatusText: action.payload.statusText,
+            networkStatus: action.payload.status,
+
+            // status: action.payload.status,
+            // statusText: action.payload.statusText,
+            // message: action.payload.data.message,
         },
         signUpError: null,
     }),

@@ -1,18 +1,14 @@
 import {AnyAction, Reducer} from "redux";
 import {RouterState} from "connected-react-router";
+import * as React from "react";
 
 
-
-// export type SignInResponseType = {
-//     createdDate: string | null,
-//     modifiedDate: string | null,
-//     id: number,
-//     userId: string | null,
-//     userPassword: null,
-//     name: string | null,
-//     email: string | null,
-//     role: string | null,
-// }
+export interface ChangeFieldType {
+    form: string;
+    key: string;
+    value: string;
+    [index: string]: any;
+}
 
 export interface SignUpResponseType {
     data: {
@@ -23,7 +19,7 @@ export interface SignUpResponseType {
     },
 }
 
-export type SignInResponseType = {
+export interface SignInResponseType {
     data: {
         createdDate: string | null,
         modifiedDate: string | null,
@@ -36,29 +32,37 @@ export type SignInResponseType = {
     },
 }
 
-export type SignUpReqType = {
+export interface SignUpReqType {
     email: FormDataEntryValue | null;
     name: FormDataEntryValue | null;
     userId: FormDataEntryValue | null;
     userPassword: FormDataEntryValue | null;
     userPasswordConfirm: FormDataEntryValue | null;
+    [index: string]: any;
 }
 
-export type SignInReqType = {
+export interface SignInReqType {
     userId: FormDataEntryValue | null;
     userPassword: FormDataEntryValue | null;
+    [index: string]: any;
 }
 
 export interface SignUpProps {
-    signup: (reqData: SignUpReqType) => void;
+    form: SignUpReqType;
+    // signup: (reqData: SignUpReqType) => void;
     error: SignUpErrorType | null;
     isLoading: boolean;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 export interface SignInProps {
-    signin: (reqData: SignInReqType) => void;
+    form: SignInReqType;
+    // signin: (reqData: SignInReqType) => void;
     error: SignInErrorType | null;
     isLoading: boolean;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 // export type AuthErrorType = {
@@ -69,20 +73,29 @@ export interface SignInProps {
 //     errorDetailMessage: string | null,
 // }
 
-export type SignUpErrorType = {
+export interface SignUpErrorType {
     exception: string | null,
     code: string | null,
     message: string | null,
     status: number | null,
     error: string | null,
+    networkStatusText: string | null,
+    networkStatus: number | null,
 }
 
-export type SignInErrorType = {
-    status: number | null,
-    statusText: string | null,
+export interface SignInErrorType {
+    exception: string | null,
+    code: string | null,
     message: string | null,
-    // errorMessage: string | null,
-    // errorDetailMessage: string | null,
+    status: number | null,
+    error: string | null,
+    networkStatusText: string | null,
+    networkStatus: number | null,
+
+    // status: number | null,
+    // statusText: string | null,
+    // message: string | null,
+
 }
 
 export interface UserInfoType {
@@ -100,6 +113,8 @@ export interface UserInfoType {
 // }
 
 export interface AuthState {
+    signup: SignUpReqType,
+    signin: SignInReqType,
     isSigninedIn: boolean,
     userInfo: UserInfoType | null,
     // token: string | null;
@@ -108,6 +123,7 @@ export interface AuthState {
     authErrorCase: string | null,
     signInError: SignInErrorType | null,
     signUpError: SignUpErrorType | null,
+    [index: string]: any;
 }
 
 export interface RootState{
